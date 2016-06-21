@@ -159,3 +159,4 @@ function _updateListHeaderNumCards(list, total, found) {
 
 	return false;
 }
+
