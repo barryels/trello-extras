@@ -1,0 +1,58 @@
+{
+  "name": "trello-extras-userscript",
+  "version": "1.0.1",
+  "description": "Some extra functionality for Trello",
+  "main": "index.js",
+  "scripts": {
+    "clean": "n-clean bin && mkdirp bin && npm run scripts:lib",
+    "manifest_json:update": "node ./build/manifest.json/manifest.json.js",
+    "styles": "node-sass src/index.scss bin/css/index.css",
+    "styles:watch": "chokidar 'src/**/*.scss' -c 'npm run styles' --initial --silent",
+    "scripts": "simplifyify src/index.user.js --debug --outfile bin/js/index.user.js",
+    "scripts:lib": "node ./build/js/lib/js.lib.js",
+    "scripts:watch": "chokidar 'src/**/*.js' -c 'npm run scripts' --initial --silent",
+    "package_json:watch": "chokidar 'package.json' -c 'npm run manifest_json:update' --initial --silent",
+    "watch": "npm run package_json:watch & npm run scripts:watch & npm run styles:watch",
+    "start": "npm run clean && npm run watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Barry Els <barryels@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^12.0.1",
+    "chokidar-cli": "^1.0.1",
+    "dotenv": "^2.0.0",
+    "eslint": "^2.7.0",
+    "mkdirp": "^0.5.1",
+    "node-sass": "^3.5.3",
+    "npm-build-tools": "^2.2.0",
+    "simplifyify": "^2.0.1"
+  },
+  "dependencies": {
+    "jquery": "^1.12.0"
+  },
+  "manifestJSONTemplate": {
+    "manifest_version": 2,
+    "content_scripts": [
+      {
+        "exclude_globs": [],
+        "include_globs": [
+          "*"
+        ],
+        "css": [
+          "css/index.css"
+        ],
+        "js": [
+          "js/lib/jquery.min.js",
+          "js/index.user.js"
+        ],
+        "matches": [
+          "http://trello.com/*",
+          "https://trello.com/*"
+        ],
+        "run_at": "document_end"
+      }
+    ],
+    "converted_from_user_script": true
+  }
+}

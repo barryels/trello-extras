@@ -1,0 +1,41 @@
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "ecmaFeatures": {
+    "modules": true,
+    "jsx": true
+  },
+
+  "plugins": [
+    "react"
+  ],
+
+  "rules": {
+    "strict": [2, "global"],
+    "quotes": [2, "double"],
+    "eqeqeq": [2, "smart"],
+    "indent": [2, 4],
+    "semi": [2, "always"],
+    "max-params": [2, 3],
+    "max-depth": [2, 2],
+    "max-statements": [2, 15],
+    "complexity": [2, 5]
+  },
+
+  "globals": {
+//    "require": false,
+//    "module": false,
+    "jasmine": false,
+    "describe": false,
+    "fdescribe": false,
+    "it": false,
+    "fit": false,
+    "beforeEach": false,
+    "afterEach": false,
+    "spyOn": false,
+    "expect": false
+  }
+}

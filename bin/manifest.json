@@ -1,0 +1,28 @@
+{
+	"manifest_version": 2,
+	"content_scripts": [
+		{
+			"exclude_globs": [],
+			"include_globs": [
+				"*"
+			],
+			"css": [
+				"css/index.css"
+			],
+			"js": [
+				"js/lib/jquery.min.js",
+				"js/index.user.js"
+			],
+			"matches": [
+				"http://trello.com/*",
+				"https://trello.com/*"
+			],
+			"run_at": "document_end"
+		}
+	],
+	"converted_from_user_script": true,
+	"name": "trello-extras-userscript",
+	"version": "1.0.1",
+	"description": "Some extra functionality for Trello",
+	"author": "Barry Els <barryels@gmail.com>"
+}
