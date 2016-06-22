@@ -10,3 +10,21 @@
 
 .list-header .be-list-points-total {
   margin: 0 0 7px 0; }
+
+.be-CardChecklistCompletionLine {
+  bottom: 0;
+  height: 4px;
+  left: 0;
+  position: absolute;
+  width: 100%; }
+  .be-CardChecklistCompletionLine--not_started {
+    background: #eb5a46;
+    width: 5% !important; }
+  .be-CardChecklistCompletionLine--started {
+    background: #ffab4a; }
+  .be-CardChecklistCompletionLine--in_progress {
+    background: #ce95e4; }
+  .be-CardChecklistCompletionLine--nearly_done {
+    background: #3c96cb; }
+  .be-CardChecklistCompletionLine--complete {
+    background: #61bd4f; }

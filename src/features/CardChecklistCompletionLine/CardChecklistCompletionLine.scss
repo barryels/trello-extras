@@ -1,0 +1,29 @@
+.be-CardChecklistCompletionLine {
+	bottom: 0;
+	height: 4px;
+	left: 0;
+	position: absolute;
+	width: 100%;
+
+	&--not_started {
+		background: #eb5a46;
+		width: 5% !important;
+	}
+
+	&--started {
+		background: #ffab4a;
+	}
+
+	&--in_progress {
+		background: #ce95e4;
+	}
+
+	&--nearly_done {
+		background: #3c96cb;
+	}
+
+	&--complete {
+		background: #61bd4f;
+	}
+
+}
