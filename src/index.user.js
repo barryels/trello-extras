@@ -19,7 +19,6 @@ window.$ = window.jQuery = jQuery.noConflict(true);
 window.addEventListener("load", init, false);
 
 function init() {
-	console.log('Trello Extras is running...');
 	var loadInterval;
 
 	loadInterval = window.setInterval(function () {
