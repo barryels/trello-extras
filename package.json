@@ -14,7 +14,7 @@
     "package_json:watch": "chokidar 'package.json' -c 'npm run manifest_json:update' --initial --silent",
     "watch": "npm run package_json:watch & npm run scripts:watch & npm run styles:watch",
     "start": "npm run clean && npm run watch",
-    "preversion": "npm run manifest_json:update",
+    "preversion": "npm run manifest_json:update && git add -A dist/manifest.json",
     "version:bump:minor": "npm version minor",
     "version:bump:patch": "npm version patch",
     "test": "echo \"Error: no test specified\" && exit 1"
