@@ -107,16 +107,15 @@ module.exports = function () {
 			filterList.find('[type="checkbox"]').change(function () {
 				updateFilter(filterList);
 			});
+
+			updateFilter(filterList);
 		}
 	}
 
 
 	function updateFilter(filterList) {
 		var list = filterList.closest('.list'),
-			listCards = list.find('.list-card'),
-			labelsToFilterBy = [],
-			foundCardsTotal = 0,
-			listCardsTotal = Utils.getListCardsTotal(list);
+			labelsToFilterBy = [];
 
 		filterList.find('[type="checkbox"]').each(function () {
 			if (this.checked) {
@@ -126,38 +125,7 @@ module.exports = function () {
 
 		list.attr('data-be-CardFilterByLabel', labelsToFilterBy.join(','));
 
-		listCards.each(function () {
-			var card = $(this),
-				showCard = false,
-				listCardLabels = Utils.getCardLabels(card);
-
-			if (listCardLabels.length === 0) {
-				if (labelsToFilterBy.indexOf('no-labels') > -1) {
-					showCard = true;
-				} else {
-					showCard = false;
-				}
-			} else {
-				listCardLabels.each(function () {
-					var colour = Utils.getCardLabelColourFromClass($(this).attr('class'));
-
-					if (labelsToFilterBy.indexOf(colour) > -1) {
-						showCard = true;
-					}
-				});
-			}
-
-			if (showCard) {
-				card.removeClass('hide');
-				foundCardsTotal += 1;
-			} else {
-				card.addClass('hide');
-			}
-
-		});
-
-		Utils.updateListHeaderNumCards(list, listCardsTotal, foundCardsTotal);
-
+		Utils.filterListCards(list);
 	}
 
 

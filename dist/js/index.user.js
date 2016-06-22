@@ -184,16 +184,15 @@ module.exports = function () {
 			filterList.find('[type="checkbox"]').change(function () {
 				updateFilter(filterList);
 			});
+
+			updateFilter(filterList);
 		}
 	}
 
 
 	function updateFilter(filterList) {
 		var list = filterList.closest('.list'),
-			listCards = list.find('.list-card'),
-			labelsToFilterBy = [],
-			foundCardsTotal = 0,
-			listCardsTotal = Utils.getListCardsTotal(list);
+			labelsToFilterBy = [];
 
 		filterList.find('[type="checkbox"]').each(function () {
 			if (this.checked) {
@@ -203,38 +202,7 @@ module.exports = function () {
 
 		list.attr('data-be-CardFilterByLabel', labelsToFilterBy.join(','));
 
-		listCards.each(function () {
-			var card = $(this),
-				showCard = false,
-				listCardLabels = Utils.getCardLabels(card);
-
-			if (listCardLabels.length === 0) {
-				if (labelsToFilterBy.indexOf('no-labels') > -1) {
-					showCard = true;
-				} else {
-					showCard = false;
-				}
-			} else {
-				listCardLabels.each(function () {
-					var colour = Utils.getCardLabelColourFromClass($(this).attr('class'));
-
-					if (labelsToFilterBy.indexOf(colour) > -1) {
-						showCard = true;
-					}
-				});
-			}
-
-			if (showCard) {
-				card.removeClass('hide');
-				foundCardsTotal += 1;
-			} else {
-				card.addClass('hide');
-			}
-
-		});
-
-		Utils.updateListHeaderNumCards(list, listCardsTotal, foundCardsTotal);
-
+		Utils.filterListCards(list);
 	}
 
 
@@ -399,8 +367,85 @@ module.exports = function () {
 				break;
 			}
 		}
-		
+
 		return result;
+	}
+
+
+	function filterListCards(list) {
+		var searchTextToFilterBy = '',
+			labelsToFilterBy = [],
+			foundCardsTotal = 0,
+			listCards = list.find('.list-card'),
+			listCardsTotal = getListCardsTotal(list);
+
+
+		// Search text
+		if (list.attr('data-be-ListSearch')) {
+			searchTextToFilterBy = list.attr('data-be-ListSearch');
+		}
+
+		listCards.each(function () {
+			var card = $(this),
+				title = card.find('.list-card-title').text(),
+				usernames = '';
+
+			card.find('.member-avatar').each(function () {
+				usernames += $(this).attr('title') + ' ';
+			});
+
+			if (title.toLowerCase().indexOf(searchTextToFilterBy.toLowerCase()) > -1 || usernames.toLowerCase().indexOf(searchTextToFilterBy.toLowerCase()) > -1) {
+				card.removeClass('hide');
+			} else {
+				card.addClass('hide');
+			}
+
+		});
+
+		// Label filter
+		if (list.attr('data-be-CardFilterByLabel')) {
+			labelsToFilterBy = list.attr('data-be-CardFilterByLabel').split(',');
+		}
+
+		listCards.each(function () {
+			var card = $(this),
+				showCard = false,
+				listCardLabels = getCardLabels(card);
+
+			if (card.hasClass('hide')) {
+				return;
+			}
+
+			if (listCardLabels.length === 0) {
+				if (labelsToFilterBy.indexOf('no-labels') > -1) {
+					showCard = true;
+				} else {
+					showCard = false;
+				}
+			} else {
+				listCardLabels.each(function () {
+					var colour = getCardLabelColourFromClass($(this).attr('class'));
+
+					if (labelsToFilterBy.indexOf(colour) > -1) {
+						showCard = true;
+					}
+				});
+			}
+
+			if (showCard) {
+				card.removeClass('hide');
+			} else {
+				card.addClass('hide');
+			}
+
+			if (!card.hasClass('hide')) {
+				foundCardsTotal += 1;
+			}
+
+		});
+
+		updateListHeaderNumCards(list, listCardsTotal, foundCardsTotal);
+
 	}
 
 	function removeDuplicateObjectsFromArray(arr, field) {
@@ -428,6 +473,7 @@ module.exports = function () {
 		updateListHeaderNumCards: updateListHeaderNumCards,
 		getListHeaderCardCounter: getListHeaderCardCounter,
 		getCardLabelColourFromClass: getCardLabelColourFromClass,
+		filterListCards: filterListCards,
 		removeDuplicateObjectsFromArray: removeDuplicateObjectsFromArray
 	}
 
@@ -451,37 +497,14 @@ module.exports = function () {
 
 	var addSearchToList = function (list) {
 		var listHeader = list.find('.list-header'),
-			inputSearch,
-			listCards = list.find('.list-card'),
-			listCardsTotal = Utils.getListCardsTotal(list);
+			inputSearch;
 
 		listHeader.append('<input class="be-ListSearch__input" placeholder="Search..." type="text" />');
 
 		inputSearch = listHeader.find('.be-ListSearch__input');
 		inputSearch.bind('keyup', function () {
-			var value = $(this).val();
-			var foundCardsTotal = 0;
-
-			listCards.each(function () {
-				var card = $(this),
-					title = card.find('.list-card-title').text(),
-					usernames = '';
-
-				card.find('.member-avatar').each(function () {
-					usernames += $(this).attr('title') + ' ';
-				});
-
-				if (title.toLowerCase().indexOf(value.toLowerCase()) > -1 || usernames.toLowerCase().indexOf(value.toLowerCase()) > -1) {
-					card.removeClass('hide');
-					foundCardsTotal += 1;
-				} else {
-					card.addClass('hide');
-				}
-
-			});
-
-			Utils.updateListHeaderNumCards(list, listCardsTotal, foundCardsTotal);
-
+			list.attr('data-be-ListSearch', $(this).val());
+			Utils.filterListCards(list);
 		});
 
 	};

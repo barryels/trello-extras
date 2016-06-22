@@ -84,8 +84,85 @@ module.exports = function () {
 				break;
 			}
 		}
-		
+
 		return result;
+	}
+
+
+	function filterListCards(list) {
+		var searchTextToFilterBy = '',
+			labelsToFilterBy = [],
+			foundCardsTotal = 0,
+			listCards = list.find('.list-card'),
+			listCardsTotal = getListCardsTotal(list);
+
+
+		// Search text
+		if (list.attr('data-be-ListSearch')) {
+			searchTextToFilterBy = list.attr('data-be-ListSearch');
+		}
+
+		listCards.each(function () {
+			var card = $(this),
+				title = card.find('.list-card-title').text(),
+				usernames = '';
+
+			card.find('.member-avatar').each(function () {
+				usernames += $(this).attr('title') + ' ';
+			});
+
+			if (title.toLowerCase().indexOf(searchTextToFilterBy.toLowerCase()) > -1 || usernames.toLowerCase().indexOf(searchTextToFilterBy.toLowerCase()) > -1) {
+				card.removeClass('hide');
+			} else {
+				card.addClass('hide');
+			}
+
+		});
+
+		// Label filter
+		if (list.attr('data-be-CardFilterByLabel')) {
+			labelsToFilterBy = list.attr('data-be-CardFilterByLabel').split(',');
+		}
+
+		listCards.each(function () {
+			var card = $(this),
+				showCard = false,
+				listCardLabels = getCardLabels(card);
+
+			if (card.hasClass('hide')) {
+				return;
+			}
+
+			if (listCardLabels.length === 0) {
+				if (labelsToFilterBy.indexOf('no-labels') > -1) {
+					showCard = true;
+				} else {
+					showCard = false;
+				}
+			} else {
+				listCardLabels.each(function () {
+					var colour = getCardLabelColourFromClass($(this).attr('class'));
+
+					if (labelsToFilterBy.indexOf(colour) > -1) {
+						showCard = true;
+					}
+				});
+			}
+
+			if (showCard) {
+				card.removeClass('hide');
+			} else {
+				card.addClass('hide');
+			}
+
+			if (!card.hasClass('hide')) {
+				foundCardsTotal += 1;
+			}
+
+		});
+
+		updateListHeaderNumCards(list, listCardsTotal, foundCardsTotal);
+
 	}
 
 	function removeDuplicateObjectsFromArray(arr, field) {
@@ -113,6 +190,7 @@ module.exports = function () {
 		updateListHeaderNumCards: updateListHeaderNumCards,
 		getListHeaderCardCounter: getListHeaderCardCounter,
 		getCardLabelColourFromClass: getCardLabelColourFromClass,
+		filterListCards: filterListCards,
 		removeDuplicateObjectsFromArray: removeDuplicateObjectsFromArray
 	}
 
