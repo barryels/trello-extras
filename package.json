@@ -16,7 +16,7 @@
     "start": "npm run clean && npm run watch",
     "version:bump:patch": "npm version --no-git-tag-version patch",
     "version:bump:minor": "npm version minor",
-    "postversion": "npm run manifest_json:update && git add -A '*' && git commit -m 'auto-update manifest.json file'",
+    "postversion": "npm run manifest_json:update && git add -A '*' && git commit -m 'version bump'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Barry Els <barryels@gmail.com>",
