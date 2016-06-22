@@ -8,8 +8,10 @@
 
 'use strict';
 
-var listSearch = require('./features/ListSearch/ListSearch');
-var cardPoints = require('./features/CardPoints/CardPoints');
+var Utils = require('./features/Core/Utils');
+var ListSearch = require('./features/ListSearch/ListSearch');
+var CardPoints = require('./features/CardPoints/CardPoints');
+var CardChecklistCompletionLine = require('./features/CardChecklistCompletionLine/CardChecklistCompletionLine');
 
 window.$ = window.jQuery = jQuery.noConflict(true);
 
@@ -20,7 +22,7 @@ function init() {
 	var loadInterval;
 
 	loadInterval = window.setInterval(function () {
-		if ($('.list')) {
+		if (Utils.isLoaded()) {
 			window.clearInterval(loadInterval);
 			onLoaded();
 		}
@@ -28,30 +30,8 @@ function init() {
 }
 
 function onLoaded() {
-	var lists = $('.list');
-
-	showListsCardCount(lists);
-	cardPoints.init(lists);
-	listSearch.init(lists);
-
+	Utils.init();
+	CardPoints.init(Utils.getLists());
+	ListSearch.init(Utils.getLists());
+	CardChecklistCompletionLine.init();
 }
-
-
-/*
- Displays the card count beneath the title (required for sumListsCardPoints & addSearchToList
- */
-function showListsCardCount(lists) {
-
-	lists.each(function () {
-		var list = $(this),
-			listCards = list.find('.list-card'),
-			listHeader = list.find('.list-header');
-
-		listHeader.append('<p class="be-list-header-num-cards">' + listCards.length + ' cards</p>');
-
-	});
-}
-
-
-
-

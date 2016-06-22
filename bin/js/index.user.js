@@ -1,4 +1,19 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+
+
+module.exports = function () {
+
+	function init() {
+
+	}
+
+	return {
+		init: init
+	}
+
+}();
+
+},{}],2:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../Core/Utils');
@@ -66,8 +81,10 @@ module.exports = function () {
 
 }();
 
-},{"./../Core/Utils":2}],2:[function(require,module,exports){
+},{"./../Core/Utils":3}],3:[function(require,module,exports){
 module.exports = function () {
+
+	var lists = null;
 
 	var getListCardsTotal = function (list) {
 		return list.find('.list-card').length;
@@ -92,14 +109,51 @@ module.exports = function () {
 		return false;
 	};
 
+
+	function isLoaded() {
+		return getLists();
+	}
+
+
+	function getLists() {
+		if (!lists) {
+			lists = $('.list');
+		}
+		return lists;
+	}
+
+
+	/*
+	 Displays the card count beneath the title (required for sumListsCardPoints & addSearchToList
+	 */
+	function showListsCardCount(lists) {
+
+		lists.each(function () {
+			var list = $(this),
+				listCards = list.find('.list-card'),
+				listHeader = list.find('.list-header');
+
+			listHeader.append('<p class="be-list-header-num-cards">' + listCards.length + ' cards</p>');
+
+		});
+	}
+
+
+	function init() {
+		showListsCardCount(getLists());
+	}
+
 	return {
+		init: init,
+		isLoaded: isLoaded,
+		getLists: getLists,
 		getListCardsTotal: getListCardsTotal,
 		updateListHeaderNumCards: updateListHeaderNumCards
 	}
 
 }();
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../Core/Utils');
@@ -153,7 +207,7 @@ module.exports = function () {
 
 }();
 
-},{"./../Core/Utils":2}],4:[function(require,module,exports){
+},{"./../Core/Utils":3}],5:[function(require,module,exports){
 // ==UserScript==
 //
 // @namespace      http://www.barryels.com/
@@ -164,8 +218,10 @@ module.exports = function () {
 
 'use strict';
 
-var listSearch = require('./features/ListSearch/ListSearch');
-var cardPoints = require('./features/CardPoints/CardPoints');
+var Utils = require('./features/Core/Utils');
+var ListSearch = require('./features/ListSearch/ListSearch');
+var CardPoints = require('./features/CardPoints/CardPoints');
+var CardChecklistCompletionLine = require('./features/CardChecklistCompletionLine/CardChecklistCompletionLine');
 
 window.$ = window.jQuery = jQuery.noConflict(true);
 
@@ -176,7 +232,7 @@ function init() {
 	var loadInterval;
 
 	loadInterval = window.setInterval(function () {
-		if ($('.list')) {
+		if (Utils.isLoaded()) {
 			window.clearInterval(loadInterval);
 			onLoaded();
 		}
@@ -184,33 +240,11 @@ function init() {
 }
 
 function onLoaded() {
-	var lists = $('.list');
-
-	showListsCardCount(lists);
-	cardPoints.init(lists);
-	listSearch.init(lists);
-
+	Utils.init();
+	CardPoints.init(Utils.getLists());
+	ListSearch.init(Utils.getLists());
+	CardChecklistCompletionLine.init();
 }
 
-
-/*
- Displays the card count beneath the title (required for sumListsCardPoints & addSearchToList
- */
-function showListsCardCount(lists) {
-
-	lists.each(function () {
-		var list = $(this),
-			listCards = list.find('.list-card'),
-			listHeader = list.find('.list-header');
-
-		listHeader.append('<p class="be-list-header-num-cards">' + listCards.length + ' cards</p>');
-
-	});
-}
-
-
-
-
-
-},{"./features/CardPoints/CardPoints":1,"./features/ListSearch/ListSearch":3}]},{},[4])
+},{"./features/CardChecklistCompletionLine/CardChecklistCompletionLine":1,"./features/CardPoints/CardPoints":2,"./features/Core/Utils":3,"./features/ListSearch/ListSearch":4}]},{},[5])
 //# sourceMappingURL=index.user.js.map
