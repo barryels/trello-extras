@@ -136,19 +136,16 @@ module.exports = function () {
 			});
 
 			selectAllButton.bind('click', function () {
-				console.log('all');
 				var filterListContent = $(this).closest('.be-CardFilterByLabel__list').find('.pop-over-content');
 				filterListContent.find('[type="checkbox"]').prop('checked', true).attr('checked', 'checked');
 				updateFilter(filterListContent);
 			});
 
 			selectNoneButton.bind('click', function () {
-				console.log('none');
 				var filterListContent = $(this).closest('.be-CardFilterByLabel__list').find('.pop-over-content');
 				filterListContent.find('[type="checkbox"]').prop('checked', false).removeAttr('checked');
 				updateFilter(filterListContent);
 			});
-
 
 		});
 
@@ -221,13 +218,13 @@ module.exports = function () {
 			}
 
 			filterListContent.append('<label class="be-CardFilterByLabel__list__item"><input type="checkbox" name="' + colour + '" checked="checked" /><span class="be-CardFilterByLabel__list__icon card-label-' + colour + '">&nbsp;</span><span class="be-CardFilterByLabel__list__title">' + listLabelTitle + '</span></label>');
-
-			filterListContent.find('[type="checkbox"]').change(function () {
-				updateFilter(filterListContent);
-			});
-
-			updateFilter(filterListContent);
 		}
+
+		filterListContent.find('[type="checkbox"]').change(function () {
+			updateFilter(filterListContent);
+		});
+
+		updateFilter(filterListContent);
 	}
 
 
@@ -417,8 +414,8 @@ module.exports = function () {
 
 	function filterListCards(list) {
 		var searchTextToFilterBy = '',
-			searchTextToFilterByAsWords = [],
-			labelsToFilterBy = [],
+			searchTextToFilterByAsWords = null,
+			labelsToFilterBy = null,
 			foundCardsTotal = 0,
 			listCards = list.find('.list-card'),
 			listCardsTotal = getListCardsTotal(list);
@@ -446,6 +443,7 @@ module.exports = function () {
 
 			// Search text
 			if (searchTextToFilterBy === '') {
+
 				showCard = true;
 
 			} else {
@@ -481,13 +479,7 @@ module.exports = function () {
 			// Label filter
 			if (labelsToFilterBy) {
 				if (showCard === true) {
-					if (listCardLabels.length === 0) {
-						if (labelsToFilterBy.indexOf('no-labels') > -1) {
-							showCard = true;
-						} else {
-							showCard = false;
-						}
-					} else {
+					if (listCardLabels.length > 0) {
 						showCard = false;
 
 						listCardLabels.each(function () {
@@ -495,10 +487,19 @@ module.exports = function () {
 
 							if (labelsToFilterBy.indexOf(colour) > -1) {
 								showCard = true;
+								return false;
 							}
 						});
+					} else {
+						if (labelsToFilterBy.indexOf('no-labels') > -1) {
+							showCard = true;
+						} else {
+							showCard = false;
+						}
 					}
 				}
+			} else {
+				showCard = false;
 			}
 
 			if (showCard) {
@@ -606,7 +607,6 @@ window.$ = window.jQuery = jQuery.noConflict(true);
 window.addEventListener("load", init, false);
 
 function init() {
-	console.log('Trello Extras is running...');
 	var loadInterval;
 
 	loadInterval = window.setInterval(function () {

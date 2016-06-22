@@ -70,7 +70,6 @@ module.exports = function () {
 				updateFilter(filterListContent);
 			});
 
-
 		});
 
 		$(document).bind('click', function () {
@@ -142,13 +141,13 @@ module.exports = function () {
 			}
 
 			filterListContent.append('<label class="be-CardFilterByLabel__list__item"><input type="checkbox" name="' + colour + '" checked="checked" /><span class="be-CardFilterByLabel__list__icon card-label-' + colour + '">&nbsp;</span><span class="be-CardFilterByLabel__list__title">' + listLabelTitle + '</span></label>');
-
-			filterListContent.find('[type="checkbox"]').change(function () {
-				updateFilter(filterListContent);
-			});
-
-			updateFilter(filterListContent);
 		}
+
+		filterListContent.find('[type="checkbox"]').change(function () {
+			updateFilter(filterListContent);
+		});
+
+		updateFilter(filterListContent);
 	}
 
 

@@ -91,8 +91,8 @@ module.exports = function () {
 
 	function filterListCards(list) {
 		var searchTextToFilterBy = '',
-			searchTextToFilterByAsWords = [],
-			labelsToFilterBy = [],
+			searchTextToFilterByAsWords = null,
+			labelsToFilterBy = null,
 			foundCardsTotal = 0,
 			listCards = list.find('.list-card'),
 			listCardsTotal = getListCardsTotal(list);
@@ -120,6 +120,7 @@ module.exports = function () {
 
 			// Search text
 			if (searchTextToFilterBy === '') {
+
 				showCard = true;
 
 			} else {
@@ -155,13 +156,7 @@ module.exports = function () {
 			// Label filter
 			if (labelsToFilterBy) {
 				if (showCard === true) {
-					if (listCardLabels.length === 0) {
-						if (labelsToFilterBy.indexOf('no-labels') > -1) {
-							showCard = true;
-						} else {
-							showCard = false;
-						}
-					} else {
+					if (listCardLabels.length > 0) {
 						showCard = false;
 
 						listCardLabels.each(function () {
@@ -169,10 +164,19 @@ module.exports = function () {
 
 							if (labelsToFilterBy.indexOf(colour) > -1) {
 								showCard = true;
+								return false;
 							}
 						});
+					} else {
+						if (labelsToFilterBy.indexOf('no-labels') > -1) {
+							showCard = true;
+						} else {
+							showCard = false;
+						}
 					}
 				}
+			} else {
+				showCard = false;
 			}
 
 			if (showCard) {
