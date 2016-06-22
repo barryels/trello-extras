@@ -1,6 +1,6 @@
 {
   "name": "trello-extras-userscript",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Some extra functionality for Trello",
   "main": "index.js",
   "scripts": {
