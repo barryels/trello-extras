@@ -4,16 +4,17 @@
   "description": "Some extra functionality for Trello",
   "main": "index.js",
   "scripts": {
-    "clean": "n-clean bin && mkdirp bin && npm run scripts:lib",
+    "clean": "n-clean dist && mkdirp dist && npm run scripts:lib",
     "manifest_json:update": "node ./build/manifest.json/manifest.json.js",
-    "styles": "node-sass src/index.scss bin/css/index.css",
+    "styles": "node-sass src/index.scss dist/css/index.css",
     "styles:watch": "chokidar 'src/**/*.scss' -c 'npm run styles' --initial --silent",
-    "scripts": "simplifyify src/index.user.js --debug --outfile bin/js/index.user.js",
+    "scripts": "simplifyify src/index.user.js --debug --outfile dist/js/index.user.js",
     "scripts:lib": "node ./build/js/lib/js.lib.js",
     "scripts:watch": "chokidar 'src/**/*.js' -c 'npm run scripts' --initial --silent",
     "package_json:watch": "chokidar 'package.json' -c 'npm run manifest_json:update' --initial --silent",
     "watch": "npm run package_json:watch & npm run scripts:watch & npm run styles:watch",
     "start": "npm run clean && npm run watch",
+    "bump:minor": "",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Barry Els <barryels@gmail.com>",
@@ -31,6 +32,7 @@
   "dependencies": {
     "jquery": "^1.12.0"
   },
+  "distDirectory": "dist",
   "manifestJSONTemplate": {
     "manifest_version": 2,
     "content_scripts": [
