@@ -1,10 +1,12 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-
+var Utils = require('./../Core/Utils');
 
 module.exports = function () {
 
 	function init() {
-
+		// Utils.getCards().each(function () {
+		// 	console.log(Utils.getCardChecklists($(this)).find('.badge-text'));
+		// });
 	}
 
 	return {
@@ -13,10 +15,10 @@ module.exports = function () {
 
 }();
 
-},{}],2:[function(require,module,exports){
+},{"./../Core/Utils":3}],2:[function(require,module,exports){
 'use strict';
 
-var utils = require('./../Core/Utils');
+var Utils = require('./../Core/Utils');
 
 module.exports = function () {
 
@@ -42,7 +44,7 @@ module.exports = function () {
 			var list = $(this),
 				listHeader = list.find('.list-header'),
 				beListPointsTotal,
-				listCards = list.find('.list-card'),
+				listCards = Utils.getCards(list),
 				total = 0;
 
 			beListPointsTotal = listHeader.find('.be-list-points-total');
@@ -82,6 +84,8 @@ module.exports = function () {
 }();
 
 },{"./../Core/Utils":3}],3:[function(require,module,exports){
+'use strict';
+
 module.exports = function () {
 
 	var lists = null;
@@ -122,6 +126,18 @@ module.exports = function () {
 		return lists;
 	}
 
+	function getCards(list) {
+		if (list) {
+			return list.find('.list-card');
+		}
+		return $('.list-card');
+	}
+
+	function getCardChecklists(card) {
+		var checklists = card.find('[title="Checklist items"]');
+		return checklists;
+	}
+
 
 	/*
 	 Displays the card count beneath the title (required for sumListsCardPoints & addSearchToList
@@ -147,6 +163,8 @@ module.exports = function () {
 		init: init,
 		isLoaded: isLoaded,
 		getLists: getLists,
+		getCards: getCards,
+		getCardChecklists: getCardChecklists,
 		getListCardsTotal: getListCardsTotal,
 		updateListHeaderNumCards: updateListHeaderNumCards
 	}
@@ -208,6 +226,8 @@ module.exports = function () {
 }();
 
 },{"./../Core/Utils":3}],5:[function(require,module,exports){
+'use strict';
+
 // ==UserScript==
 //
 // @namespace      http://www.barryels.com/
@@ -215,8 +235,6 @@ module.exports = function () {
 // @history        1.0 first version
 //
 // ==/UserScript==
-
-'use strict';
 
 var Utils = require('./features/Core/Utils');
 var ListSearch = require('./features/ListSearch/ListSearch');

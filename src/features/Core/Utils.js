@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function () {
 
 	var lists = null;
@@ -38,6 +40,18 @@ module.exports = function () {
 		return lists;
 	}
 
+	function getCards(list) {
+		if (list) {
+			return list.find('.list-card');
+		}
+		return $('.list-card');
+	}
+
+	function getCardChecklists(card) {
+		var checklists = card.find('[title="Checklist items"]');
+		return checklists;
+	}
+
 
 	/*
 	 Displays the card count beneath the title (required for sumListsCardPoints & addSearchToList
@@ -63,6 +77,8 @@ module.exports = function () {
 		init: init,
 		isLoaded: isLoaded,
 		getLists: getLists,
+		getCards: getCards,
+		getCardChecklists: getCardChecklists,
 		getListCardsTotal: getListCardsTotal,
 		updateListHeaderNumCards: updateListHeaderNumCards
 	}

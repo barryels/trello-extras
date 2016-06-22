@@ -1,3 +1,5 @@
+'use strict';
+
 // ==UserScript==
 //
 // @namespace      http://www.barryels.com/
@@ -5,8 +7,6 @@
 // @history        1.0 first version
 //
 // ==/UserScript==
-
-'use strict';
 
 var Utils = require('./features/Core/Utils');
 var ListSearch = require('./features/ListSearch/ListSearch');

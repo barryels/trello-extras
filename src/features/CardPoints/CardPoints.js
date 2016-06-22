@@ -1,6 +1,6 @@
 'use strict';
 
-var utils = require('./../Core/Utils');
+var Utils = require('./../Core/Utils');
 
 module.exports = function () {
 
@@ -26,7 +26,7 @@ module.exports = function () {
 			var list = $(this),
 				listHeader = list.find('.list-header'),
 				beListPointsTotal,
-				listCards = list.find('.list-card'),
+				listCards = Utils.getCards(list),
 				total = 0;
 
 			beListPointsTotal = listHeader.find('.be-list-points-total');
