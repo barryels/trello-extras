@@ -19,7 +19,6 @@
 		}
 	}
 
-
 	&__list {
 		@include border-radius(3px, 3px, 3px, 3px);
 		@include box-shadow(0, 1px, 6px, rgba(0, 0, 0, 0.15));
@@ -27,12 +26,59 @@
 		background: #fff;
 		border: 1px solid #d6dadc;
 		border-bottom-color: #c4c9cc;
-		padding: 10px;
 		position: absolute;
 		left: 212px;
 		top: 36px;
 		width: 300px;
 		z-index: 3;
+
+		&__item {
+			@include clearfix();
+			display: block;
+			margin: 7px 0;
+			position: relative;
+		}
+
+		input {
+			left: 0;
+			margin: 0;
+			padding: 0;
+			position: absolute;
+			top: 5px;
+		}
+
+		&__icon {
+			@include border-radius(3px, 3px, 3px, 3px);
+			display: block;
+			float: left;
+			height: 20px;
+			left: 25px;
+			overflow: hidden;
+			position: relative;
+			top: 0;
+			width: 50px;
+		}
+
+		&__title {
+			display: block;
+			padding-left: 85px;
+			position: relative;
+			top: 1px;
+		}
+	}
+
+	&__buttons {
+		padding: 0 10px 5px;
+		text-align: center;
+	}
+
+	&__btn-select-none {
+		display: inline-block;
+
+	}
+
+	&__btn-select-all {
+		display: inline-block;
 	}
 
 }

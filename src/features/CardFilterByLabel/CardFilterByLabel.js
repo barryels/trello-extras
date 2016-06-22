@@ -25,20 +25,58 @@ module.exports = function () {
 			var list = $(this);
 			var listHeader = list.find('.list-header'),
 				filterTriggerButton,
+				filterCloseButton,
+				selectAllButton,
+				selectNoneButton,
 				filterList;
 
 			listHeader.append('<a class="be-CardFilterByLabel__trigger dark-hover"><span class="icon-sm icon-label"></span></a>');
-			listHeader.append('<ul class="be-CardFilterByLabel__list"></ul>');
+			listHeader.append('<div class="be-CardFilterByLabel__list">' +
+				'<div class="pop-over-header js-pop-over-header"><span class="pop-over-header-title">Filter by Label</span><a href="#" class="pop-over-header-close-btn icon-sm icon-close"></a></div>' +
+				'<div class="be-CardFilterByLabel__buttons">' +
+				'<button class="be-CardFilterByLabel__btn-select-none">Select None</button>' +
+				'<button class="be-CardFilterByLabel__btn-select-all">Select All</button>' +
+				'</div>' +
+				'<hr />' +
+				'<div class="pop-over-content js-pop-over-content u-fancy-scrollbar js-tab-parent"></div>' +
+				'</div>');
 
 			filterTriggerButton = listHeader.find('.be-CardFilterByLabel__trigger');
+			filterCloseButton = listHeader.find('.pop-over-header-close-btn');
 			filterList = listHeader.find('.be-CardFilterByLabel__list');
+			selectAllButton = listHeader.find('.be-CardFilterByLabel__btn-select-all');
+			selectNoneButton = listHeader.find('.be-CardFilterByLabel__btn-select-none');
 
 			filterList.hide(0);
 
-			filterTriggerButton.bind('click', function () {
+			filterTriggerButton.bind('click', function (e) {
+				e.stopPropagation();
 				$(this).closest('.list-header').find('.be-CardFilterByLabel__list').toggle();
 			});
 
+			filterCloseButton.bind('click', function () {
+				$(this).closest('.list-header').find('.be-CardFilterByLabel__list').hide();
+			});
+
+			selectAllButton.bind('click', function () {
+				console.log('all');
+				var filterListContent = $(this).closest('.be-CardFilterByLabel__list').find('.pop-over-content');
+				filterListContent.find('[type="checkbox"]').prop('checked', true).attr('checked', 'checked');
+				updateFilter(filterListContent);
+			});
+
+			selectNoneButton.bind('click', function () {
+				console.log('none');
+				var filterListContent = $(this).closest('.be-CardFilterByLabel__list').find('.pop-over-content');
+				filterListContent.find('[type="checkbox"]').prop('checked', false).removeAttr('checked');
+				updateFilter(filterListContent);
+			});
+
+
+		});
+
+		$(document).bind('click', function () {
+			// $('.be-CardFilterByLabel__list').hide();
 		});
 
 	};
@@ -48,7 +86,7 @@ module.exports = function () {
 		Utils.getLists().each(function () {
 			var list = $(this);
 
-			var filterList = list.find('.be-CardFilterByLabel__list'),
+			var filterListContent = list.find('.be-CardFilterByLabel__list .pop-over-content'),
 				listLabelsTemp = [],
 				listLabels = [],
 				i,
@@ -83,43 +121,48 @@ module.exports = function () {
 				}
 			}
 
-			updateLabelFilterList(filterList, listLabels);
+			updateLabelFilterList(filterListContent, listLabels);
 
 		});
 
 	}
 
 
-	function updateLabelFilterList(filterList, listLabels) {
+	function updateLabelFilterList(filterListContent, listLabels) {
 		var i;
 
-		filterList.html('<li><label><input type="checkbox" name="no-labels" checked="checked" />[ No Labels ]</label></li>');
+		filterListContent.html('');
+
+		filterListContent.append('<label class="be-CardFilterByLabel__list__item"><input type="checkbox" name="no-labels" checked="checked" /><span class="be-CardFilterByLabel__list__title">No Labels</span></label>');
 
 		for (i = 0; i < listLabels.length; i++) {
 			var listLabelTitle = listLabels[i].title,
 				colour = listLabels[i].colour;
 
 			if (!listLabelTitle) {
-				listLabelTitle = '( ' + colour.substr(0, 1).toUpperCase() + colour.substr(1, colour.length) +' )';
+				listLabelTitle = '(' + colour.substr(0, 1).toUpperCase() + colour.substr(1, colour.length) + ')';
 			}
-			filterList.append('<li><label><input type="checkbox" name="' + colour + '" checked="checked" />' + listLabelTitle + '</label></li>');
 
-			filterList.find('[type="checkbox"]').change(function () {
-				updateFilter(filterList);
+			filterListContent.append('<label class="be-CardFilterByLabel__list__item"><input type="checkbox" name="' + colour + '" checked="checked" /><span class="be-CardFilterByLabel__list__icon card-label-' + colour + '">&nbsp;</span><span class="be-CardFilterByLabel__list__title">' + listLabelTitle + '</span></label>');
+
+			filterListContent.find('[type="checkbox"]').change(function () {
+				updateFilter(filterListContent);
 			});
 
-			updateFilter(filterList);
+			updateFilter(filterListContent);
 		}
 	}
 
 
-	function updateFilter(filterList) {
-		var list = filterList.closest('.list'),
+	function updateFilter(filterListContent) {
+		var list = filterListContent.closest('.list'),
 			labelsToFilterBy = [];
 
-		filterList.find('[type="checkbox"]').each(function () {
+		filterListContent.find('[type="checkbox"]').each(function () {
+			var name = $(this).attr('name');
+
 			if (this.checked) {
-				labelsToFilterBy.push($(this).attr('name'));
+				labelsToFilterBy.push(name);
 			}
 		});
 

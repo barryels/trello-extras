@@ -55,9 +55,50 @@
   background: #fff;
   border: 1px solid #d6dadc;
   border-bottom-color: #c4c9cc;
-  padding: 10px;
   position: absolute;
   left: 212px;
   top: 36px;
   width: 300px;
   z-index: 3; }
+  .be-CardFilterByLabel__list__item {
+    display: block;
+    margin: 7px 0;
+    position: relative; }
+    .be-CardFilterByLabel__list__item:after {
+      content: "";
+      display: table;
+      clear: both; }
+  .be-CardFilterByLabel__list input {
+    left: 0;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 5px; }
+  .be-CardFilterByLabel__list__icon {
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    display: block;
+    float: left;
+    height: 20px;
+    left: 25px;
+    overflow: hidden;
+    position: relative;
+    top: 0;
+    width: 50px; }
+  .be-CardFilterByLabel__list__title {
+    display: block;
+    padding-left: 85px;
+    position: relative;
+    top: 1px; }
+
+.be-CardFilterByLabel__buttons {
+  padding: 0 10px 5px;
+  text-align: center; }
+
+.be-CardFilterByLabel__btn-select-none {
+  display: inline-block; }
+
+.be-CardFilterByLabel__btn-select-all {
+  display: inline-block; }
