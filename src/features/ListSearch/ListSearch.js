@@ -28,9 +28,14 @@ module.exports = function () {
 
 			listCards.each(function () {
 				var card = $(this),
-					title = card.find('.list-card-title').text();
+					title = card.find('.list-card-title').text(),
+					usernames = '';
 
-				if (title.toLowerCase().indexOf(value.toLowerCase()) > -1) {
+				card.find('.member-avatar').each(function () {
+					usernames += $(this).attr('title') + ' ';
+				});
+
+				if (title.toLowerCase().indexOf(value.toLowerCase()) > -1 || usernames.toLowerCase().indexOf(value.toLowerCase()) > -1) {
 					card.removeClass('hide');
 					foundCardsTotal += 1;
 				} else {
