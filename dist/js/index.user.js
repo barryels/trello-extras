@@ -74,7 +74,66 @@ module.exports = function () {
 
 }();
 
-},{"./../Core/Utils":3}],2:[function(require,module,exports){
+},{"./../Core/Utils":4}],2:[function(require,module,exports){
+'use strict';
+
+var utils = require('./../Core/Utils');
+
+module.exports = function () {
+
+	var init = function (lists) {
+		lists.each(function () {
+			addLabelFilterToList($(this));
+		})
+	};
+
+	var addLabelFilterToList = function (list) {
+		var listHeader = list.find('.list-header'),
+			filterButton,
+			listCards = list.find('.list-card'),
+			listCardsTotal = utils.getListCardsTotal(list);
+
+		listHeader.append('<i class="be-CardFilterByLabel__icon"></i>');
+		listHeader.append('<ul class="be-CardFilterByLabel__list">' +
+			'<li></li>' +
+			'</ul>');
+
+		filterButton = listHeader.find('.be-CardFilterByLabel__icon');
+
+		filterButton.bind('click', function () {
+			$(this).closest('.be-CardFilterByLabel').toggle();
+		});
+
+		inputSearch.bind('keyup', function () {
+			var value = $(this).val();
+			var foundCardsTotal = 0;
+
+			listCards.each(function () {
+				var card = $(this),
+					title = card.find('.list-card-title').text();
+
+				// if (title.toLowerCase().indexOf(value.toLowerCase()) > -1 || usernames.toLowerCase().indexOf(value.toLowerCase()) > -1) {
+				// 	card.removeClass('hide');
+				// 	foundCardsTotal += 1;
+				// } else {
+				// 	card.addClass('hide');
+				// }
+
+			});
+
+			utils.updateListHeaderNumCards(list, listCardsTotal, foundCardsTotal);
+
+		});
+
+	};
+
+	return {
+		init: init
+	}
+
+}();
+
+},{"./../Core/Utils":4}],3:[function(require,module,exports){
 'use strict';
 
 var Utils = require('./../Core/Utils');
@@ -142,7 +201,7 @@ module.exports = function () {
 
 }();
 
-},{"./../Core/Utils":3}],3:[function(require,module,exports){
+},{"./../Core/Utils":4}],4:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -230,7 +289,7 @@ module.exports = function () {
 
 }();
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../Core/Utils');
@@ -289,7 +348,7 @@ module.exports = function () {
 
 }();
 
-},{"./../Core/Utils":3}],5:[function(require,module,exports){
+},{"./../Core/Utils":4}],6:[function(require,module,exports){
 'use strict';
 
 // ==UserScript==
@@ -304,6 +363,7 @@ var Utils = require('./features/Core/Utils');
 var ListSearch = require('./features/ListSearch/ListSearch');
 var CardPoints = require('./features/CardPoints/CardPoints');
 var CardChecklistCompletionLine = require('./features/CardChecklistCompletionLine/CardChecklistCompletionLine');
+var CardFilterByLabel = require('./features/CardFilterByLabel/CardFilterByLabel');
 
 window.$ = window.jQuery = jQuery.noConflict(true);
 
@@ -326,7 +386,8 @@ function onLoaded() {
 	CardPoints.init(Utils.getLists());
 	ListSearch.init(Utils.getLists());
 	CardChecklistCompletionLine.init();
+	CardFilterByLabel.init();
 }
 
-},{"./features/CardChecklistCompletionLine/CardChecklistCompletionLine":1,"./features/CardPoints/CardPoints":2,"./features/Core/Utils":3,"./features/ListSearch/ListSearch":4}]},{},[5])
+},{"./features/CardChecklistCompletionLine/CardChecklistCompletionLine":1,"./features/CardFilterByLabel/CardFilterByLabel":2,"./features/CardPoints/CardPoints":3,"./features/Core/Utils":4,"./features/ListSearch/ListSearch":5}]},{},[6])
 //# sourceMappingURL=index.user.js.map

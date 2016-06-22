@@ -12,6 +12,7 @@ var Utils = require('./features/Core/Utils');
 var ListSearch = require('./features/ListSearch/ListSearch');
 var CardPoints = require('./features/CardPoints/CardPoints');
 var CardChecklistCompletionLine = require('./features/CardChecklistCompletionLine/CardChecklistCompletionLine');
+var CardFilterByLabel = require('./features/CardFilterByLabel/CardFilterByLabel');
 
 window.$ = window.jQuery = jQuery.noConflict(true);
 
@@ -34,4 +35,5 @@ function onLoaded() {
 	CardPoints.init(Utils.getLists());
 	ListSearch.init(Utils.getLists());
 	CardChecklistCompletionLine.init();
+	CardFilterByLabel.init();
 }
