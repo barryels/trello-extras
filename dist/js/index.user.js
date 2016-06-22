@@ -4,6 +4,19 @@ var Utils = require('./../Core/Utils');
 module.exports = function () {
 
 	function init() {
+		var windowLocationHREF = window.location.href;
+
+		update();
+
+		setInterval(function () {
+			if (windowLocationHREF !== window.location.href) {
+				windowLocationHREF = window.location.href;
+				update();
+			}
+		}, 100);
+	}
+
+	function update() {
 		Utils.getCards().each(function () {
 			var progressText = Utils.getCardChecklists($(this)).find('.badge-text').text();
 			drawProgressLine($(this), progressText);
