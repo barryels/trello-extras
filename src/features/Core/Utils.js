@@ -91,33 +91,17 @@ module.exports = function () {
 
 	function filterListCards(list) {
 		var searchTextToFilterBy = '',
+			searchTextToFilterByAsWords = [],
 			labelsToFilterBy = [],
 			foundCardsTotal = 0,
 			listCards = list.find('.list-card'),
 			listCardsTotal = getListCardsTotal(list);
 
-
 		// Search text
 		if (list.attr('data-be-ListSearch')) {
 			searchTextToFilterBy = list.attr('data-be-ListSearch');
+			searchTextToFilterByAsWords = searchTextToFilterBy.split(' ');
 		}
-
-		listCards.each(function () {
-			var card = $(this),
-				title = card.find('.list-card-title').text(),
-				usernames = '';
-
-			card.find('.member-avatar').each(function () {
-				usernames += $(this).attr('title') + ' ';
-			});
-
-			if (title.toLowerCase().indexOf(searchTextToFilterBy.toLowerCase()) > -1 || usernames.toLowerCase().indexOf(searchTextToFilterBy.toLowerCase()) > -1) {
-				card.removeClass('hide');
-			} else {
-				card.addClass('hide');
-			}
-
-		});
 
 		// Label filter
 		if (list.attr('data-be-CardFilterByLabel')) {
@@ -127,26 +111,68 @@ module.exports = function () {
 		listCards.each(function () {
 			var card = $(this),
 				showCard = false,
-				listCardLabels = getCardLabels(card);
+				title = card.find('.list-card-title').text(),
+				usernames = [],
+				listCardLabels = getCardLabels(card),
+				i,
+				j;
 
-			if (card.hasClass('hide')) {
-				return;
+
+			// Search text
+			if (searchTextToFilterBy === '') {
+				showCard = true;
+
+			} else {
+
+				// Search by username
+				card.find('.member-avatar').each(function () {
+					usernames.push($(this).attr('title'));
+				});
+
+				if (usernames.length > 0) {
+					for (i = 0; i < searchTextToFilterByAsWords.length; i++) {
+						for (j = 0; j < usernames.length; j++) {
+							if (usernames[j].toLowerCase().indexOf(searchTextToFilterByAsWords[i].toLowerCase()) > -1) {
+								showCard = true;
+								break;
+							}
+						}
+					}
+				}
+
+
+				// Search by title
+				if (showCard === false) {
+					if (title.toLowerCase().indexOf(searchTextToFilterBy.toLowerCase()) > -1) {
+						showCard = true;
+					} else {
+						showCard = false;
+					}
+				}
+
 			}
 
-			if (listCardLabels.length === 0) {
-				if (labelsToFilterBy.indexOf('no-labels') > -1) {
-					showCard = true;
-				} else {
-					showCard = false;
-				}
-			} else {
-				listCardLabels.each(function () {
-					var colour = getCardLabelColourFromClass($(this).attr('class'));
+			// Label filter
+			if (labelsToFilterBy) {
+				if (showCard === true) {
+					if (listCardLabels.length === 0) {
+						if (labelsToFilterBy.indexOf('no-labels') > -1) {
+							showCard = true;
+						} else {
+							showCard = false;
+						}
+					} else {
+						showCard = false;
 
-					if (labelsToFilterBy.indexOf(colour) > -1) {
-						showCard = true;
+						listCardLabels.each(function () {
+							var colour = getCardLabelColourFromClass($(this).attr('class'));
+
+							if (labelsToFilterBy.indexOf(colour) > -1) {
+								showCard = true;
+							}
+						});
 					}
-				});
+				}
 			}
 
 			if (showCard) {
