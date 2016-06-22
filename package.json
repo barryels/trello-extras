@@ -14,8 +14,8 @@
     "package_json:watch": "chokidar 'package.json' -c 'npm run manifest_json:update' --initial --silent",
     "watch": "npm run package_json:watch & npm run scripts:watch & npm run styles:watch",
     "start": "npm run clean && npm run watch",
-    "version:bump:minor": "npm version minor",
-    "version:bump:patch": "npm version patch",
+    "version:bump:minor": "npm version minor && npm run manifest_json:update",
+    "version:bump:patch": "npm version patch && npm run manifest_json:update",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Barry Els <barryels@gmail.com>",
