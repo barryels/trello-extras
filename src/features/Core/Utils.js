@@ -4,13 +4,31 @@ module.exports = function () {
 
 	var lists = null;
 
-	var getListCardsTotal = function (list) {
+	function getListCardsTotal(list) {
 		return list.find('.list-card').length;
-	};
+	}
 
-	var updateListHeaderNumCards = function (list, total, found) {
-		var listHeader = list.find('.list-header'),
-			listHeaderNumCards = listHeader.find('.be-list-header-num-cards');
+	function addListsHeaderCardCounter(lists) {
+
+		lists.each(function () {
+			var list = $(this),
+				listCards = list.find('.list-card'),
+				listHeader = list.find('.list-header');
+
+			listHeader.append('<p class="be-ListHeaderCardCounter">' + listCards.length + ' cards</p>');
+
+		});
+	}
+
+	function getListHeaderCardCounter(list) {
+		if (list) {
+			return list.find('.be-ListHeaderCardCounter');
+		}
+		return null;
+	}
+
+	function updateListHeaderNumCards(list, total, found) {
+		var listHeaderNumCards = getListHeaderCardCounter(list);
 
 		if (listHeaderNumCards) {
 			listHeaderNumCards.attr('data-total', total);
@@ -25,7 +43,7 @@ module.exports = function () {
 		}
 
 		return false;
-	};
+	}
 
 
 	function isLoaded() {
@@ -48,29 +66,40 @@ module.exports = function () {
 	}
 
 	function getCardChecklists(card) {
-		var checklists = card.find('[title="Checklist items"]');
-		return checklists;
+		return card.find('[title="Checklist items"]');
 	}
 
+	function getCardLabels(card) {
+		return card.find('.card-label');
+	}
 
-	/*
-	 Displays the card count beneath the title (required for sumListsCardPoints & addSearchToList
-	 */
-	function showListsCardCount(lists) {
+	function getCardLabelColourFromClass(className) {
+		var classes = className.split(' '),
+			i,
+			result = '';
 
-		lists.each(function () {
-			var list = $(this),
-				listCards = list.find('.list-card'),
-				listHeader = list.find('.list-header');
+		for (i = 0; i < classes.length; i++) {
+			if (classes[i].indexOf('card-label-') > -1) {
+				result = classes[i].split('-')[2];
+				break;
+			}
+		}
+		
+		return result;
+	}
 
-			listHeader.append('<p class="be-list-header-num-cards">' + listCards.length + ' cards</p>');
-
-		});
+	function removeDuplicateObjectsFromArray(arr, field) {
+		var u = [];
+		arr.reduce(function (a, b) {
+			if (a[field] !== b[field]) u.push(b);
+			return b;
+		}, []);
+		return u;
 	}
 
 
 	function init() {
-		showListsCardCount(getLists());
+		addListsHeaderCardCounter(getLists());
 	}
 
 	return {
@@ -79,8 +108,12 @@ module.exports = function () {
 		getLists: getLists,
 		getCards: getCards,
 		getCardChecklists: getCardChecklists,
+		getCardLabels: getCardLabels,
 		getListCardsTotal: getListCardsTotal,
-		updateListHeaderNumCards: updateListHeaderNumCards
+		updateListHeaderNumCards: updateListHeaderNumCards,
+		getListHeaderCardCounter: getListHeaderCardCounter,
+		getCardLabelColourFromClass: getCardLabelColourFromClass,
+		removeDuplicateObjectsFromArray: removeDuplicateObjectsFromArray
 	}
 
 }();

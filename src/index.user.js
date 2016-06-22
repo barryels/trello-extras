@@ -35,5 +35,5 @@ function onLoaded() {
 	CardPoints.init(Utils.getLists());
 	ListSearch.init(Utils.getLists());
 	CardChecklistCompletionLine.init();
-	CardFilterByLabel.init();
+	CardFilterByLabel.init(Utils.getLists());
 }

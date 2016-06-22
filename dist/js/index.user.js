@@ -77,55 +77,166 @@ module.exports = function () {
 },{"./../Core/Utils":4}],2:[function(require,module,exports){
 'use strict';
 
-var utils = require('./../Core/Utils');
+var Utils = require('./../Core/Utils');
 
 module.exports = function () {
 
-	var init = function (lists) {
-		lists.each(function () {
-			addLabelFilterToList($(this));
-		})
+	var init = function () {
+		var windowLocationHREF = window.location.href;
+
+		addLabelFilterToListHeader();
+
+		update();
+
+		setInterval(function () {
+			if (windowLocationHREF !== window.location.href) {
+				windowLocationHREF = window.location.href;
+				update();
+			}
+		}, 100);
 	};
 
-	var addLabelFilterToList = function (list) {
-		var listHeader = list.find('.list-header'),
-			filterButton,
-			listCards = list.find('.list-card'),
-			listCardsTotal = utils.getListCardsTotal(list);
+	var addLabelFilterToListHeader = function (list) {
 
-		listHeader.append('<i class="be-CardFilterByLabel__icon"></i>');
-		listHeader.append('<ul class="be-CardFilterByLabel__list">' +
-			'<li></li>' +
-			'</ul>');
+		Utils.getLists().each(function () {
+			var list = $(this);
+			var listHeader = list.find('.list-header'),
+				filterTriggerButton,
+				filterList;
 
-		filterButton = listHeader.find('.be-CardFilterByLabel__icon');
+			listHeader.append('<a class="be-CardFilterByLabel__trigger dark-hover"><span class="icon-sm icon-label"></span></a>');
+			listHeader.append('<ul class="be-CardFilterByLabel__list"></ul>');
 
-		filterButton.bind('click', function () {
-			$(this).closest('.be-CardFilterByLabel').toggle();
-		});
+			filterTriggerButton = listHeader.find('.be-CardFilterByLabel__trigger');
+			filterList = listHeader.find('.be-CardFilterByLabel__list');
 
-		inputSearch.bind('keyup', function () {
-			var value = $(this).val();
-			var foundCardsTotal = 0;
+			filterList.hide(0);
 
-			listCards.each(function () {
-				var card = $(this),
-					title = card.find('.list-card-title').text();
-
-				// if (title.toLowerCase().indexOf(value.toLowerCase()) > -1 || usernames.toLowerCase().indexOf(value.toLowerCase()) > -1) {
-				// 	card.removeClass('hide');
-				// 	foundCardsTotal += 1;
-				// } else {
-				// 	card.addClass('hide');
-				// }
-
+			filterTriggerButton.bind('click', function () {
+				$(this).closest('.list-header').find('.be-CardFilterByLabel__list').toggle();
 			});
 
-			utils.updateListHeaderNumCards(list, listCardsTotal, foundCardsTotal);
-
 		});
 
 	};
+
+
+	function update() {
+		Utils.getLists().each(function () {
+			var list = $(this);
+
+			var filterList = list.find('.be-CardFilterByLabel__list'),
+				listLabelsTemp = [],
+				listLabels = [],
+				i,
+				j;
+
+			Utils.getCards($(this)).each(function () {
+				Utils.getCardLabels($(this)).each(function () {
+					var cardLabel = {
+						colour: Utils.getCardLabelColourFromClass($(this).attr('class')),
+						title: $(this).attr('title')
+					};
+
+					listLabelsTemp.push(cardLabel);
+				});
+			});
+
+			// Only push unique labels into the listLabels array
+			for (i = 0; i < listLabelsTemp.length; i++) {
+				var exists;
+
+				for (j = 0; j < listLabels.length; j++) {
+					exists = false;
+
+					if (listLabels[j].colour === listLabelsTemp[i].colour) {
+						exists = true;
+						break;
+					}
+				}
+
+				if (!exists) {
+					listLabels.push(listLabelsTemp[i]);
+				}
+			}
+
+			updateLabelFilterList(filterList, listLabels);
+
+		});
+
+	}
+
+
+	function updateLabelFilterList(filterList, listLabels) {
+		var i;
+
+		filterList.html('<li><label><input type="checkbox" name="no-labels" checked="checked" />[ No Labels ]</label></li>');
+
+		for (i = 0; i < listLabels.length; i++) {
+			var listLabelTitle = listLabels[i].title,
+				colour = listLabels[i].colour;
+
+			if (!listLabelTitle) {
+				listLabelTitle = '( ' + colour.substr(0, 1).toUpperCase() + colour.substr(1, colour.length) +' )';
+			}
+			filterList.append('<li><label><input type="checkbox" name="' + colour + '" checked="checked" />' + listLabelTitle + '</label></li>');
+
+			filterList.find('[type="checkbox"]').change(function () {
+				updateFilter(filterList);
+			});
+		}
+	}
+
+
+	function updateFilter(filterList) {
+		var list = filterList.closest('.list'),
+			listCards = list.find('.list-card'),
+			labelsToFilterBy = [],
+			foundCardsTotal = 0,
+			listCardsTotal = Utils.getListCardsTotal(list);
+
+		filterList.find('[type="checkbox"]').each(function () {
+			if (this.checked) {
+				labelsToFilterBy.push($(this).attr('name'));
+			}
+		});
+
+		list.attr('data-be-CardFilterByLabel', labelsToFilterBy.join(','));
+
+		listCards.each(function () {
+			var card = $(this),
+				showCard = false,
+				listCardLabels = Utils.getCardLabels(card);
+
+			if (listCardLabels.length === 0) {
+				if (labelsToFilterBy.indexOf('no-labels') > -1) {
+					showCard = true;
+				} else {
+					showCard = false;
+				}
+			} else {
+				listCardLabels.each(function () {
+					var colour = Utils.getCardLabelColourFromClass($(this).attr('class'));
+
+					if (labelsToFilterBy.indexOf(colour) > -1) {
+						showCard = true;
+					}
+				});
+			}
+
+			if (showCard) {
+				card.removeClass('hide');
+				foundCardsTotal += 1;
+			} else {
+				card.addClass('hide');
+			}
+
+		});
+
+		Utils.updateListHeaderNumCards(list, listCardsTotal, foundCardsTotal);
+
+	}
+
 
 	return {
 		init: init
@@ -208,13 +319,31 @@ module.exports = function () {
 
 	var lists = null;
 
-	var getListCardsTotal = function (list) {
+	function getListCardsTotal(list) {
 		return list.find('.list-card').length;
-	};
+	}
 
-	var updateListHeaderNumCards = function (list, total, found) {
-		var listHeader = list.find('.list-header'),
-			listHeaderNumCards = listHeader.find('.be-list-header-num-cards');
+	function addListsHeaderCardCounter(lists) {
+
+		lists.each(function () {
+			var list = $(this),
+				listCards = list.find('.list-card'),
+				listHeader = list.find('.list-header');
+
+			listHeader.append('<p class="be-ListHeaderCardCounter">' + listCards.length + ' cards</p>');
+
+		});
+	}
+
+	function getListHeaderCardCounter(list) {
+		if (list) {
+			return list.find('.be-ListHeaderCardCounter');
+		}
+		return null;
+	}
+
+	function updateListHeaderNumCards(list, total, found) {
+		var listHeaderNumCards = getListHeaderCardCounter(list);
 
 		if (listHeaderNumCards) {
 			listHeaderNumCards.attr('data-total', total);
@@ -229,7 +358,7 @@ module.exports = function () {
 		}
 
 		return false;
-	};
+	}
 
 
 	function isLoaded() {
@@ -252,29 +381,40 @@ module.exports = function () {
 	}
 
 	function getCardChecklists(card) {
-		var checklists = card.find('[title="Checklist items"]');
-		return checklists;
+		return card.find('[title="Checklist items"]');
 	}
 
+	function getCardLabels(card) {
+		return card.find('.card-label');
+	}
 
-	/*
-	 Displays the card count beneath the title (required for sumListsCardPoints & addSearchToList
-	 */
-	function showListsCardCount(lists) {
+	function getCardLabelColourFromClass(className) {
+		var classes = className.split(' '),
+			i,
+			result = '';
 
-		lists.each(function () {
-			var list = $(this),
-				listCards = list.find('.list-card'),
-				listHeader = list.find('.list-header');
+		for (i = 0; i < classes.length; i++) {
+			if (classes[i].indexOf('card-label-') > -1) {
+				result = classes[i].split('-')[2];
+				break;
+			}
+		}
+		
+		return result;
+	}
 
-			listHeader.append('<p class="be-list-header-num-cards">' + listCards.length + ' cards</p>');
-
-		});
+	function removeDuplicateObjectsFromArray(arr, field) {
+		var u = [];
+		arr.reduce(function (a, b) {
+			if (a[field] !== b[field]) u.push(b);
+			return b;
+		}, []);
+		return u;
 	}
 
 
 	function init() {
-		showListsCardCount(getLists());
+		addListsHeaderCardCounter(getLists());
 	}
 
 	return {
@@ -283,8 +423,12 @@ module.exports = function () {
 		getLists: getLists,
 		getCards: getCards,
 		getCardChecklists: getCardChecklists,
+		getCardLabels: getCardLabels,
 		getListCardsTotal: getListCardsTotal,
-		updateListHeaderNumCards: updateListHeaderNumCards
+		updateListHeaderNumCards: updateListHeaderNumCards,
+		getListHeaderCardCounter: getListHeaderCardCounter,
+		getCardLabelColourFromClass: getCardLabelColourFromClass,
+		removeDuplicateObjectsFromArray: removeDuplicateObjectsFromArray
 	}
 
 }();
@@ -292,7 +436,7 @@ module.exports = function () {
 },{}],5:[function(require,module,exports){
 'use strict';
 
-var utils = require('./../Core/Utils');
+var Utils = require('./../Core/Utils');
 
 module.exports = function () {
 
@@ -309,11 +453,11 @@ module.exports = function () {
 		var listHeader = list.find('.list-header'),
 			inputSearch,
 			listCards = list.find('.list-card'),
-			listCardsTotal = utils.getListCardsTotal(list);
+			listCardsTotal = Utils.getListCardsTotal(list);
 
-		listHeader.append('<input class="be-input-search" placeholder="Search..." type="text" />');
+		listHeader.append('<input class="be-ListSearch__input" placeholder="Search..." type="text" />');
 
-		inputSearch = listHeader.find('.be-input-search');
+		inputSearch = listHeader.find('.be-ListSearch__input');
 		inputSearch.bind('keyup', function () {
 			var value = $(this).val();
 			var foundCardsTotal = 0;
@@ -336,7 +480,7 @@ module.exports = function () {
 
 			});
 
-			utils.updateListHeaderNumCards(list, listCardsTotal, foundCardsTotal);
+			Utils.updateListHeaderNumCards(list, listCardsTotal, foundCardsTotal);
 
 		});
 
@@ -386,7 +530,7 @@ function onLoaded() {
 	CardPoints.init(Utils.getLists());
 	ListSearch.init(Utils.getLists());
 	CardChecklistCompletionLine.init();
-	CardFilterByLabel.init();
+	CardFilterByLabel.init(Utils.getLists());
 }
 
 },{"./features/CardChecklistCompletionLine/CardChecklistCompletionLine":1,"./features/CardFilterByLabel/CardFilterByLabel":2,"./features/CardPoints/CardPoints":3,"./features/Core/Utils":4,"./features/ListSearch/ListSearch":5}]},{},[6])

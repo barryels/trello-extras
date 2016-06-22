@@ -1,0 +1,22 @@
+@mixin box-sizing($box-sizing: "border-box") {
+	box-sizing: $box-sizing;
+}
+
+@mixin border-radius($topright, $bottomright, $bottomleft, $topleft) {
+	border-top-right-radius: $topright;
+	border-top-left-radius: $topleft;
+	border-bottom-right-radius: $bottomright;
+	border-bottom-left-radius: $bottomleft;
+}
+
+@mixin box-shadow($left, $top, $blur, $color, $inset: false) {
+	@if $inset {
+		-webkit-box-shadow: inset $left $top $blur $color;
+		-moz-box-shadow: inset $left $top $blur $color;
+		box-shadow: inset $left $top $blur $color;
+	} @else {
+		-webkit-box-shadow: $left $top $blur $color;
+		-moz-box-shadow: $left $top $blur $color;
+		box-shadow: $left $top $blur $color;
+	}
+}

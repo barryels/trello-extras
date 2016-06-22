@@ -1,15 +1,12 @@
-.list-header .be-input-search {
+.list-header .be-ListHeaderCardCounter {
+  margin: 3px 0 0 0; }
+
+.list-header .be-ListSearch__input {
   left: -2px;
   margin: 0;
   position: relative;
   width: 254px;
   z-index: 1; }
-
-.list-header .be-list-header-num-cards {
-  margin: 3px 0 0 0; }
-
-.list-header .be-list-points-total {
-  margin: 0 0 7px 0; }
 
 .be-CardChecklistCompletionLine {
   bottom: 0;
@@ -29,10 +26,38 @@
   .be-CardChecklistCompletionLine--complete {
     background: #61bd4f; }
 
-.CardFilterByLabel__icon {
-  background: #ccc;
-  bottom: 5px;
-  height: 20px;
+.be-CardFilterByLabel__trigger {
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  top: 4px;
+  cursor: pointer;
+  display: block;
   position: absolute;
-  right: 5px;
-  width: 20px; }
+  right: 32px;
+  text-align: center;
+  z-index: 2; }
+  .be-CardFilterByLabel__trigger:hover {
+    background: rgba(0, 0, 0, 0.08); }
+  .be-CardFilterByLabel__trigger .icon-sm {
+    padding: 4px; }
+
+.be-CardFilterByLabel__list {
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+  box-sizing: "border-box";
+  background: #fff;
+  border: 1px solid #d6dadc;
+  border-bottom-color: #c4c9cc;
+  padding: 10px;
+  position: absolute;
+  left: 212px;
+  top: 36px;
+  width: 300px;
+  z-index: 3; }

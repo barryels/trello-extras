@@ -1,54 +1,165 @@
 'use strict';
 
-var utils = require('./../Core/Utils');
+var Utils = require('./../Core/Utils');
 
 module.exports = function () {
 
-	var init = function (lists) {
-		lists.each(function () {
-			addLabelFilterToList($(this));
-		})
+	var init = function () {
+		var windowLocationHREF = window.location.href;
+
+		addLabelFilterToListHeader();
+
+		update();
+
+		setInterval(function () {
+			if (windowLocationHREF !== window.location.href) {
+				windowLocationHREF = window.location.href;
+				update();
+			}
+		}, 100);
 	};
 
-	var addLabelFilterToList = function (list) {
-		var listHeader = list.find('.list-header'),
-			filterButton,
-			listCards = list.find('.list-card'),
-			listCardsTotal = utils.getListCardsTotal(list);
+	var addLabelFilterToListHeader = function (list) {
 
-		listHeader.append('<i class="be-CardFilterByLabel__icon"></i>');
-		listHeader.append('<ul class="be-CardFilterByLabel__list">' +
-			'<li></li>' +
-			'</ul>');
+		Utils.getLists().each(function () {
+			var list = $(this);
+			var listHeader = list.find('.list-header'),
+				filterTriggerButton,
+				filterList;
 
-		filterButton = listHeader.find('.be-CardFilterByLabel__icon');
+			listHeader.append('<a class="be-CardFilterByLabel__trigger dark-hover"><span class="icon-sm icon-label"></span></a>');
+			listHeader.append('<ul class="be-CardFilterByLabel__list"></ul>');
 
-		filterButton.bind('click', function () {
-			$(this).closest('.be-CardFilterByLabel').toggle();
-		});
+			filterTriggerButton = listHeader.find('.be-CardFilterByLabel__trigger');
+			filterList = listHeader.find('.be-CardFilterByLabel__list');
 
-		inputSearch.bind('keyup', function () {
-			var value = $(this).val();
-			var foundCardsTotal = 0;
+			filterList.hide(0);
 
-			listCards.each(function () {
-				var card = $(this),
-					title = card.find('.list-card-title').text();
-
-				// if (title.toLowerCase().indexOf(value.toLowerCase()) > -1 || usernames.toLowerCase().indexOf(value.toLowerCase()) > -1) {
-				// 	card.removeClass('hide');
-				// 	foundCardsTotal += 1;
-				// } else {
-				// 	card.addClass('hide');
-				// }
-
+			filterTriggerButton.bind('click', function () {
+				$(this).closest('.list-header').find('.be-CardFilterByLabel__list').toggle();
 			});
 
-			utils.updateListHeaderNumCards(list, listCardsTotal, foundCardsTotal);
-
 		});
 
 	};
+
+
+	function update() {
+		Utils.getLists().each(function () {
+			var list = $(this);
+
+			var filterList = list.find('.be-CardFilterByLabel__list'),
+				listLabelsTemp = [],
+				listLabels = [],
+				i,
+				j;
+
+			Utils.getCards($(this)).each(function () {
+				Utils.getCardLabels($(this)).each(function () {
+					var cardLabel = {
+						colour: Utils.getCardLabelColourFromClass($(this).attr('class')),
+						title: $(this).attr('title')
+					};
+
+					listLabelsTemp.push(cardLabel);
+				});
+			});
+
+			// Only push unique labels into the listLabels array
+			for (i = 0; i < listLabelsTemp.length; i++) {
+				var exists;
+
+				for (j = 0; j < listLabels.length; j++) {
+					exists = false;
+
+					if (listLabels[j].colour === listLabelsTemp[i].colour) {
+						exists = true;
+						break;
+					}
+				}
+
+				if (!exists) {
+					listLabels.push(listLabelsTemp[i]);
+				}
+			}
+
+			updateLabelFilterList(filterList, listLabels);
+
+		});
+
+	}
+
+
+	function updateLabelFilterList(filterList, listLabels) {
+		var i;
+
+		filterList.html('<li><label><input type="checkbox" name="no-labels" checked="checked" />[ No Labels ]</label></li>');
+
+		for (i = 0; i < listLabels.length; i++) {
+			var listLabelTitle = listLabels[i].title,
+				colour = listLabels[i].colour;
+
+			if (!listLabelTitle) {
+				listLabelTitle = '( ' + colour.substr(0, 1).toUpperCase() + colour.substr(1, colour.length) +' )';
+			}
+			filterList.append('<li><label><input type="checkbox" name="' + colour + '" checked="checked" />' + listLabelTitle + '</label></li>');
+
+			filterList.find('[type="checkbox"]').change(function () {
+				updateFilter(filterList);
+			});
+		}
+	}
+
+
+	function updateFilter(filterList) {
+		var list = filterList.closest('.list'),
+			listCards = list.find('.list-card'),
+			labelsToFilterBy = [],
+			foundCardsTotal = 0,
+			listCardsTotal = Utils.getListCardsTotal(list);
+
+		filterList.find('[type="checkbox"]').each(function () {
+			if (this.checked) {
+				labelsToFilterBy.push($(this).attr('name'));
+			}
+		});
+
+		list.attr('data-be-CardFilterByLabel', labelsToFilterBy.join(','));
+
+		listCards.each(function () {
+			var card = $(this),
+				showCard = false,
+				listCardLabels = Utils.getCardLabels(card);
+
+			if (listCardLabels.length === 0) {
+				if (labelsToFilterBy.indexOf('no-labels') > -1) {
+					showCard = true;
+				} else {
+					showCard = false;
+				}
+			} else {
+				listCardLabels.each(function () {
+					var colour = Utils.getCardLabelColourFromClass($(this).attr('class'));
+
+					if (labelsToFilterBy.indexOf(colour) > -1) {
+						showCard = true;
+					}
+				});
+			}
+
+			if (showCard) {
+				card.removeClass('hide');
+				foundCardsTotal += 1;
+			} else {
+				card.addClass('hide');
+			}
+
+		});
+
+		Utils.updateListHeaderNumCards(list, listCardsTotal, foundCardsTotal);
+
+	}
+
 
 	return {
 		init: init

@@ -1,6 +1,6 @@
 'use strict';
 
-var utils = require('./../Core/Utils');
+var Utils = require('./../Core/Utils');
 
 module.exports = function () {
 
@@ -17,11 +17,11 @@ module.exports = function () {
 		var listHeader = list.find('.list-header'),
 			inputSearch,
 			listCards = list.find('.list-card'),
-			listCardsTotal = utils.getListCardsTotal(list);
+			listCardsTotal = Utils.getListCardsTotal(list);
 
-		listHeader.append('<input class="be-input-search" placeholder="Search..." type="text" />');
+		listHeader.append('<input class="be-ListSearch__input" placeholder="Search..." type="text" />');
 
-		inputSearch = listHeader.find('.be-input-search');
+		inputSearch = listHeader.find('.be-ListSearch__input');
 		inputSearch.bind('keyup', function () {
 			var value = $(this).val();
 			var foundCardsTotal = 0;
@@ -44,7 +44,7 @@ module.exports = function () {
 
 			});
 
-			utils.updateListHeaderNumCards(list, listCardsTotal, foundCardsTotal);
+			Utils.updateListHeaderNumCards(list, listCardsTotal, foundCardsTotal);
 
 		});
 
