@@ -59,14 +59,12 @@ module.exports = function () {
 			});
 
 			selectAllButton.bind('click', function () {
-				console.log('all');
 				var filterListContent = $(this).closest('.be-CardFilterByLabel__list').find('.pop-over-content');
 				filterListContent.find('[type="checkbox"]').prop('checked', true).attr('checked', 'checked');
 				updateFilter(filterListContent);
 			});
 
 			selectNoneButton.bind('click', function () {
-				console.log('none');
 				var filterListContent = $(this).closest('.be-CardFilterByLabel__list').find('.pop-over-content');
 				filterListContent.find('[type="checkbox"]').prop('checked', false).removeAttr('checked');
 				updateFilter(filterListContent);
