@@ -20,8 +20,15 @@ gitAdd = exec("git add -A '*'", function (error, stdout, stderr) {
 			console.log('stderr: ' + stderr);
 			if (error !== null) {
 				console.log('exec error: ' + error);
+			} else {
+				gitTag = exec("git tag -a v" + packageJSON.version + " -m 'version " + packageJSON.version + "'", function (error, stdout, stderr) {
+					console.log('stdout: ' + stdout);
+					console.log('stderr: ' + stderr);
+					if (error !== null) {
+						console.log('exec error: ' + error);
+					}
+				});
 			}
 		});
 	}
 });
-
