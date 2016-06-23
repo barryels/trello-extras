@@ -55,6 +55,7 @@ module.exports = function () {
 					progressStatus = 'complete';
 				}
 
+				card.find('.be-CardChecklistCompletionLine').remove();
 				card.append('<span class="be-CardChecklistCompletionLine be-CardChecklistCompletionLine--' + progressStatus + '"></span>');
 
 				progressLine = card.find('.be-CardChecklistCompletionLine');

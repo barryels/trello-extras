@@ -15,8 +15,8 @@
   position: absolute;
   width: 100%; }
   .be-CardChecklistCompletionLine--not_started {
-    background: #eb5a46;
-    width: 5% !important; }
+    background: #666;
+    width: 100% !important; }
   .be-CardChecklistCompletionLine--started {
     background: #3c96cb; }
   .be-CardChecklistCompletionLine--in_progress {
