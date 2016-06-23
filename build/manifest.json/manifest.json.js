@@ -4,7 +4,7 @@ var packageJSON = require('./../../package.json');
 var fs = require('fs');
 var manifestJSONTemplate = packageJSON.manifestJSONTemplate;
 
-manifestJSONTemplate.name = packageJSON.name;
+manifestJSONTemplate.name = packageJSON.title;
 manifestJSONTemplate.version = packageJSON.version;
 manifestJSONTemplate.description = packageJSON.description;
 manifestJSONTemplate.author = packageJSON.author;
