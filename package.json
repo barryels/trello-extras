@@ -1,7 +1,7 @@
 {
   "name": "trello-extras-userscript",
   "title": "Trello Extras (Userscript)",
-  "version": "1.4.7",
+  "version": "1.4.10",
   "description": "Some extra functionality for Trello",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "start": "npm run clean && npm run watch",
     "version:bump:patch": "npm version --no-git-tag-version patch",
     "version:bump:minor": "npm version minor",
-    "postversion": "npm run manifest_json:update && git add -A '*' && git commit -m 'version bump'",
+    "postversion": "npm run manifest_json:update && node ./build/postversion/postversion.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Barry Els <barryels@gmail.com>",
