@@ -15,7 +15,7 @@ module.exports = function () {
 				listCards = list.find('.list-card'),
 				listHeader = list.find('.list-header');
 
-			listHeader.append('<p class="be-ListHeaderCardCounter">' + listCards.length + ' cards</p>');
+			listHeader.append('<p class="be-ListHeaderCardCounter">' + listCards.length + '</p>');
 
 		});
 	}
@@ -34,9 +34,9 @@ module.exports = function () {
 			listHeaderNumCards.attr('data-total', total);
 
 			if (found === total) {
-				listHeaderNumCards.html(total + ' cards');
+				listHeaderNumCards.html('<i class="icon-sm icon-card"></i> ' + total);
 			} else {
-				listHeaderNumCards.html(found + ' / ' + total + ' cards');
+				listHeaderNumCards.html('<i class="icon-sm icon-card"></i> ' + found + ' / ' + total);
 			}
 
 			return true;

@@ -68,17 +68,18 @@
 	}
 
 	&__buttons {
-		padding: 0 10px 5px;
+		padding: 0 10px;
 		text-align: center;
 	}
 
 	&__btn-select-none {
-		display: inline-block;
+		display: inline-block !important;
+		margin-right: 10px;
 
 	}
 
 	&__btn-select-all {
-		display: inline-block;
+		display: inline-block !important;
 	}
 
 }

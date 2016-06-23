@@ -34,8 +34,8 @@ module.exports = function () {
 			listHeader.append('<div class="be-CardFilterByLabel__list">' +
 				'<div class="pop-over-header js-pop-over-header"><span class="pop-over-header-title">Filter by Label</span><a href="#" class="pop-over-header-close-btn icon-sm icon-close"></a></div>' +
 				'<div class="be-CardFilterByLabel__buttons">' +
-				'<button class="be-CardFilterByLabel__btn-select-none">Select None</button>' +
-				'<button class="be-CardFilterByLabel__btn-select-all">Select All</button>' +
+				'<a class="button-link be-CardFilterByLabel__btn-select-none">Select None</a>' +
+				'<a class="button-link be-CardFilterByLabel__btn-select-all">Select All</a>' +
 				'</div>' +
 				'<hr />' +
 				'<div class="pop-over-content js-pop-over-content u-fancy-scrollbar js-tab-parent"></div>' +

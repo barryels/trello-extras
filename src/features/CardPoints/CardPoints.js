@@ -53,7 +53,7 @@ module.exports = function () {
 				total += cardPoints;
 			});
 
-			beListPointsTotal.html(total + ' points');
+			beListPointsTotal.html('<i class="icon-sm icon-star"></i> ' + total);
 
 		});
 	}

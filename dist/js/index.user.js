@@ -112,8 +112,8 @@ module.exports = function () {
 			listHeader.append('<div class="be-CardFilterByLabel__list">' +
 				'<div class="pop-over-header js-pop-over-header"><span class="pop-over-header-title">Filter by Label</span><a href="#" class="pop-over-header-close-btn icon-sm icon-close"></a></div>' +
 				'<div class="be-CardFilterByLabel__buttons">' +
-				'<button class="be-CardFilterByLabel__btn-select-none">Select None</button>' +
-				'<button class="be-CardFilterByLabel__btn-select-all">Select All</button>' +
+				'<a class="button-link be-CardFilterByLabel__btn-select-none">Select None</a>' +
+				'<a class="button-link be-CardFilterByLabel__btn-select-all">Select All</a>' +
 				'</div>' +
 				'<hr />' +
 				'<div class="pop-over-content js-pop-over-content u-fancy-scrollbar js-tab-parent"></div>' +
@@ -309,7 +309,7 @@ module.exports = function () {
 				total += cardPoints;
 			});
 
-			beListPointsTotal.html(total + ' points');
+			beListPointsTotal.html('<i class="icon-sm icon-star"></i> ' + total);
 
 		});
 	}
@@ -339,7 +339,7 @@ module.exports = function () {
 				listCards = list.find('.list-card'),
 				listHeader = list.find('.list-header');
 
-			listHeader.append('<p class="be-ListHeaderCardCounter">' + listCards.length + ' cards</p>');
+			listHeader.append('<p class="be-ListHeaderCardCounter">' + listCards.length + '</p>');
 
 		});
 	}
@@ -358,9 +358,9 @@ module.exports = function () {
 			listHeaderNumCards.attr('data-total', total);
 
 			if (found === total) {
-				listHeaderNumCards.html(total + ' cards');
+				listHeaderNumCards.html('<i class="icon-sm icon-card"></i> ' + total);
 			} else {
-				listHeaderNumCards.html(found + ' / ' + total + ' cards');
+				listHeaderNumCards.html('<i class="icon-sm icon-card"></i> ' + found + ' / ' + total);
 			}
 
 			return true;

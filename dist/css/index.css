@@ -94,11 +94,12 @@
     top: 1px; }
 
 .be-CardFilterByLabel__buttons {
-  padding: 0 10px 5px;
+  padding: 0 10px;
   text-align: center; }
 
 .be-CardFilterByLabel__btn-select-none {
-  display: inline-block; }
+  display: inline-block !important;
+  margin-right: 10px; }
 
 .be-CardFilterByLabel__btn-select-all {
-  display: inline-block; }
+  display: inline-block !important; }
