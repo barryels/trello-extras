@@ -18,6 +18,7 @@
     "version:bump:patch": "npm version --no-git-tag-version patch",
     "version:bump:minor": "npm version minor",
     "postversion": "npm run manifest_json:update && node ./build/postversion/postversion.js",
+    "mov:to:gif": "ffmpeg -i 'Trello Extras.mov' -s 1280x800 -pix_fmt rgb24 -r 5 -f gif - | gifsicle --optimize=3 --delay=0 > 'Trello Extras.gif'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Barry Els <barryels@gmail.com>",
