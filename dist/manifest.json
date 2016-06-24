@@ -21,7 +21,7 @@
 	],
 	"converted_from_user_script": true,
 	"name": "Trello Extras (Userscript)",
-	"version": "1.4.13",
+	"version": "1.5.0",
 	"description": "Some extra functionality for Trello",
 	"author": "Barry Els <barryels@gmail.com>"
 }

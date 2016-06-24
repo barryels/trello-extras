@@ -1,7 +1,7 @@
 {
   "name": "trello-extras-userscript",
   "title": "Trello Extras (Userscript)",
-  "version": "1.4.13",
+  "version": "1.5.0",
   "description": "Some extra functionality for Trello",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "watch": "npm run package_json:watch & npm run scripts:watch & npm run styles:watch",
     "start": "npm run clean && npm run watch",
     "version:bump:patch": "npm version --no-git-tag-version patch",
-    "version:bump:minor": "npm version minor",
+    "version:bump:minor": "npm version --no-git-tag-version minor",
     "postversion": "npm run manifest_json:update && node ./build/postversion/postversion.js",
     "mov:to:gif": "ffmpeg -i 'Trello Extras.mov' -s 1280x800 -pix_fmt rgb24 -r 5 -f gif - | gifsicle --optimize=3 --delay=0 > 'Trello Extras.gif'",
     "test": "echo \"Error: no test specified\" && exit 1"
