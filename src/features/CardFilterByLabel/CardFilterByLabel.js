@@ -74,7 +74,7 @@ module.exports = function () {
 
 
 	function update() {
-		Utils.getLists().each(function () {
+		Utils.getLists().each(function (index) {
 			var list = $(this);
 
 			var filterListContent = list.find('.be-CardFilterByLabel__list .pop-over-content'),
@@ -85,9 +85,14 @@ module.exports = function () {
 
 			Utils.getCards($(this)).each(function () {
 				Utils.getCardLabels($(this)).each(function () {
+					var colour = Utils.getCardLabelColourFromClass($(this).attr('class')),
+						title = $(this).attr('title'),
+						id = colour + '_' + title;
+
 					var cardLabel = {
-						colour: Utils.getCardLabelColourFromClass($(this).attr('class')),
-						title: $(this).attr('title')
+						id: id,
+						colour: colour,
+						title: title
 					};
 
 					listLabelsTemp.push(cardLabel);
@@ -101,7 +106,7 @@ module.exports = function () {
 				for (j = 0; j < listLabels.length; j++) {
 					exists = false;
 
-					if (listLabels[j].colour === listLabelsTemp[i].colour) {
+					if (listLabels[j].id === listLabelsTemp[i].id) {
 						exists = true;
 						break;
 					}
@@ -127,14 +132,15 @@ module.exports = function () {
 		filterListContent.append('<label class="be-CardFilterByLabel__list__item"><input type="checkbox" name="no-labels" checked="checked" /><span class="be-CardFilterByLabel__list__title">No Labels</span></label>');
 
 		for (i = 0; i < listLabels.length; i++) {
-			var listLabelTitle = listLabels[i].title,
+			var id = listLabels[i].id,
+				listLabelTitle = listLabels[i].title,
 				colour = listLabels[i].colour;
 
 			if (!listLabelTitle) {
 				listLabelTitle = '(' + colour.substr(0, 1).toUpperCase() + colour.substr(1, colour.length) + ')';
 			}
 
-			filterListContent.append('<label class="be-CardFilterByLabel__list__item"><input type="checkbox" name="' + colour + '" checked="checked" /><span class="be-CardFilterByLabel__list__icon card-label-' + colour + '">&nbsp;</span><span class="be-CardFilterByLabel__list__title">' + listLabelTitle + '</span></label>');
+			filterListContent.append('<label class="be-CardFilterByLabel__list__item"><input type="checkbox" name="' + id + '" checked="checked" /><span class="be-CardFilterByLabel__list__icon card-label-' + colour + '">&nbsp;</span><span class="be-CardFilterByLabel__list__title">' + listLabelTitle + '</span></label>');
 		}
 
 		filterListContent.find('[type="checkbox"]').change(function () {

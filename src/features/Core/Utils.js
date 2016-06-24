@@ -175,9 +175,11 @@ module.exports = function () {
 						showCard = false;
 
 						listCardLabels.each(function () {
-							var colour = getCardLabelColourFromClass($(this).attr('class'));
+							var colour = getCardLabelColourFromClass($(this).attr('class')),
+								title = $(this).attr('title'),
+								id = colour + '_' + title;
 
-							if (labelsToFilterBy.indexOf(colour) > -1) {
+							if (labelsToFilterBy.indexOf(id) > -1) {
 								showCard = true;
 								return false;
 							}
