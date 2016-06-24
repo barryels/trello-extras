@@ -217,6 +217,12 @@ module.exports = function () {
 
 		});
 
+		if (foundCardsTotal === listCards.length) {
+			list.removeClass('filtered');
+		} else {
+			list.addClass('filtered');
+		}
+
 		updateListHeaderNumCards(list, foundCardsTotal);
 	}
 

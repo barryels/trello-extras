@@ -8,6 +8,9 @@
   width: 254px;
   z-index: 1; }
 
+.list.filtered .list-header {
+  background-color: #aaa; }
+
 .be-CardChecklistCompletionLine {
   bottom: 0;
   height: 3px;

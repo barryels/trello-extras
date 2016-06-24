@@ -9,3 +9,15 @@
 	}
 
 }
+
+.list {
+
+
+	&.filtered {
+
+		.list-header {
+			background-color: #aaa;
+		}
+	}
+
+}
