@@ -10,7 +10,6 @@
 				"css/index.css"
 			],
 			"js": [
-				"js/lib/jquery.min.js",
 				"js/index.user.js"
 			],
 			"matches": [

@@ -1,25 +1,19 @@
 'use strict';
 
+var $ = require('jquery');
 var Utils = require('./../Core/Utils');
+var WindowListener = require('./../Core/WindowListener');
 
 module.exports = function () {
 
-	var init = function () {
-		var windowLocationHREF = window.location.href;
-
+	function init() {
 		addLabelFilterToListHeader();
-
 		update();
 
-		setInterval(function () {
-			if (windowLocationHREF !== window.location.href) {
-				windowLocationHREF = window.location.href;
-				update();
-			}
-		}, 100);
-	};
+		WindowListener.subscribe("window:location:href:change", update);
+	}
 
-	var addLabelFilterToListHeader = function (list) {
+	function addLabelFilterToListHeader() {
 
 		Utils.getLists().each(function () {
 			var list = $(this);
@@ -76,7 +70,7 @@ module.exports = function () {
 			// $('.be-CardFilterByLabel__list').hide();
 		});
 
-	};
+	}
 
 
 	function update() {

@@ -1,22 +1,36 @@
 'use strict';
 
+var $ = require('jquery');
+var WindowListener = require('./../Core/WindowListener');
+var KeyboardListener = require('./../Core/KeyboardListener');
+
 module.exports = function () {
 
-	var lists = null;
-
-	function getListCardsTotal(list) {
-		return list.find('.list-card').length;
+	function init() {
+		addListsHeaderCardCounter(getLists());
 	}
 
 	function addListsHeaderCardCounter(lists) {
-
 		lists.each(function () {
 			var list = $(this),
-				listCards = list.find('.list-card'),
+				listCards = getCards(list),
 				listHeader = list.find('.list-header');
 
 			listHeader.append('<p class="be-ListHeaderCardCounter">' + listCards.length + '</p>');
 
+		});
+
+		WindowListener.subscribe("window:location:href:change", update);
+		KeyboardListener.subscribe("keyboard:key:up:enter", update);
+	}
+
+	function update() {
+		updateListsHeaderCardCounter();
+	}
+
+	function updateListsHeaderCardCounter() {
+		getLists().each(function () {
+			updateListHeaderNumCards($(this));
 		});
 	}
 
@@ -27,13 +41,14 @@ module.exports = function () {
 		return null;
 	}
 
-	function updateListHeaderNumCards(list, total, found) {
-		var listHeaderNumCards = getListHeaderCardCounter(list);
+	function updateListHeaderNumCards(list, found) {
+		var listHeaderNumCards = getListHeaderCardCounter(list),
+			total = getListCardsTotal(list);
 
 		if (listHeaderNumCards) {
 			listHeaderNumCards.attr('data-total', total);
 
-			if (found === total) {
+			if (!found || found === total) {
 				listHeaderNumCards.html('<i class="icon-sm icon-card"></i> ' + total);
 			} else {
 				listHeaderNumCards.html('<i class="icon-sm icon-card"></i> ' + found + ' / ' + total);
@@ -52,17 +67,18 @@ module.exports = function () {
 
 
 	function getLists() {
-		if (!lists) {
-			lists = $('.list');
-		}
-		return lists;
+		return $('.list');
 	}
 
 	function getCards(list) {
-		if (list) {
-			return list.find('.list-card');
+		if (!list) {
+			return $('.list-cards > .list-card');
 		}
-		return $('.list-card');
+		return list.find('> .list-cards > .list-card');
+	}
+
+	function getListCardsTotal(list) {
+		return getCards(list).length;
 	}
 
 	function getCardChecklists(card) {
@@ -94,8 +110,7 @@ module.exports = function () {
 			searchTextToFilterByAsWords = null,
 			labelsToFilterBy = null,
 			foundCardsTotal = 0,
-			listCards = list.find('.list-card'),
-			listCardsTotal = getListCardsTotal(list);
+			listCards = getCards(list);
 
 		// Search text
 		if (list.attr('data-be-ListSearch')) {
@@ -191,8 +206,7 @@ module.exports = function () {
 
 		});
 
-		updateListHeaderNumCards(list, listCardsTotal, foundCardsTotal);
-
+		updateListHeaderNumCards(list, foundCardsTotal);
 	}
 
 	function removeDuplicateObjectsFromArray(arr, field) {
@@ -202,11 +216,6 @@ module.exports = function () {
 			return b;
 		}, []);
 		return u;
-	}
-
-
-	function init() {
-		addListsHeaderCardCounter(getLists());
 	}
 
 	return {

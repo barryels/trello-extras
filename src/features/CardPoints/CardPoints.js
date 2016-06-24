@@ -1,28 +1,25 @@
 'use strict';
 
+/*
+ Sums up the card points in a particular list
+ */
+
+var $ = require('jquery');
 var Utils = require('./../Core/Utils');
+var WindowListener = require('./../Core/WindowListener');
+var KeyboardListener = require('./../Core/KeyboardListener');
 
 module.exports = function () {
 
-	/*
-	 Sums up the card points in a particular list
-	 */
-	function init(lists) {
-		var windowLocationHREF = window.location.href;
+	function init() {
+		update();
 
-		update(lists);
-
-		setInterval(function () {
-			if (windowLocationHREF !== window.location.href) {
-				windowLocationHREF = window.location.href;
-				update(lists);
-			}
-		}, 100);
-
+		WindowListener.subscribe("window:location:href:change", update);
+		KeyboardListener.subscribe("keyboard:key:up:enter", update);
 	}
 
-	function update(lists) {
-		lists.each(function () {
+	function update() {
+		Utils.getLists().each(function () {
 			var list = $(this),
 				listHeader = list.find('.list-header'),
 				beListPointsTotal,

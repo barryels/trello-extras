@@ -1,18 +1,17 @@
+'use strict';
+
+var $ = require('jquery');
 var Utils = require('./../Core/Utils');
+var WindowListener = require('./../Core/WindowListener');
+var KeyboardListener = require('./../Core/KeyboardListener');
 
 module.exports = function () {
 
 	function init() {
-		var windowLocationHREF = window.location.href;
-
 		update();
 
-		setInterval(function () {
-			if (windowLocationHREF !== window.location.href) {
-				windowLocationHREF = window.location.href;
-				update();
-			}
-		}, 100);
+		WindowListener.subscribe("window:location:href:change", update);
+		KeyboardListener.subscribe("keyboard:key:up:enter", update);
 	}
 
 	function update() {
