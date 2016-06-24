@@ -9,7 +9,8 @@
   z-index: 1; }
 
 .list.filtered .list-header {
-  background-color: #aaa; }
+  background-color: #fff;
+  margin-bottom: 10px; }
 
 .be-CardChecklistCompletionLine {
   bottom: 0;

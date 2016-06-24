@@ -43,7 +43,7 @@ module.exports = function () {
 		if (listHeaderNumCards) {
 			listHeaderNumCards.attr('data-total', total);
 
-			if (!found || found === total) {
+			if (found === undefined || found === total) {
 				listHeaderNumCards.html('<i class="icon-sm icon-card"></i> ' + total);
 			} else {
 				listHeaderNumCards.html('<i class="icon-sm icon-card"></i> ' + found + ' / ' + total);
