@@ -11606,9 +11606,9 @@ module.exports = function () {
 		});
 
 		if (foundCardsTotal === listCards.length) {
-			list.removeClass('filtered');
+			list.removeClass('be-ListFiltered');
 		} else {
-			list.addClass('filtered');
+			list.addClass('be-ListFiltered');
 		}
 
 		updateListHeaderNumCards(list, foundCardsTotal);
