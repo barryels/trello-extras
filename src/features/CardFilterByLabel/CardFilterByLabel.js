@@ -7,23 +7,22 @@ var WindowListener = require('./../Core/WindowListener');
 module.exports = function () {
 
 	function init() {
-		addLabelFilterToListHeader();
 		update();
 
 		WindowListener.subscribe("window:location:href:change", update);
 	}
 
-	function addLabelFilterToListHeader() {
+	function addLabelFilterToListHeader(list) {
 
-		Utils.getLists().each(function () {
-			var list = $(this);
-			var listHeader = list.find('.list-header'),
-				filterTriggerButton,
-				filterCloseButton,
-				selectAllButton,
-				selectNoneButton,
-				filterList;
+		var listHeader = list.find('.list-header'),
+			filterTriggerButton,
+			filterCloseButton,
+			selectAllButton,
+			selectNoneButton,
+			filterList;
 
+		if (listHeader.find('.be-CardFilterByLabel__list .pop-over-content').length === 0) {
+			listHeader.append('<div class"be-CardFilterByLabel__list"><div class="pop-over-content"></div></div>');
 			listHeader.append('<a class="be-CardFilterByLabel__trigger dark-hover"><span class="icon-sm icon-label"></span></a>');
 			listHeader.append('<div class="be-CardFilterByLabel__list">' +
 				'<div class="pop-over-header js-pop-over-header"><span class="pop-over-header-title">Filter by Label</span><a href="#" class="pop-over-header-close-btn icon-sm icon-close"></a></div>' +
@@ -63,12 +62,7 @@ module.exports = function () {
 				filterListContent.find('[type="checkbox"]').prop('checked', false).removeAttr('checked');
 				updateFilter(filterListContent);
 			});
-
-		});
-
-		$(document).bind('click', function () {
-			// $('.be-CardFilterByLabel__list').hide();
-		});
+		}
 
 	}
 
@@ -76,6 +70,7 @@ module.exports = function () {
 	function update() {
 		Utils.getLists().each(function (index) {
 			var list = $(this);
+			addLabelFilterToListHeader(list);
 
 			var filterListContent = list.find('.be-CardFilterByLabel__list .pop-over-content'),
 				listLabelsTemp = [],

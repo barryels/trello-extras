@@ -8,6 +8,9 @@
 //
 // ==/UserScript==
 
+console.info('userscript running!');
+
+var $ = require('jquery');
 var EventManager = require('./features/Core/EventManager');
 var WindowListener = require('./features/Core/WindowListener');
 var KeyboardListener = require('./features/Core/KeyboardListener');
@@ -17,13 +20,14 @@ var CardPoints = require('./features/CardPoints/CardPoints');
 var CardChecklistCompletionLine = require('./features/CardChecklistCompletionLine/CardChecklistCompletionLine');
 var CardFilterByLabel = require('./features/CardFilterByLabel/CardFilterByLabel');
 
-window.addEventListener("load", init, false);
 
 function init() {
 	var loadInterval;
 
 	loadInterval = window.setInterval(function () {
+		console.log('loading...');
 		if (Utils.isLoaded()) {
+			console.log('loaded!');
 			window.clearInterval(loadInterval);
 			onLoaded();
 		}
@@ -31,7 +35,6 @@ function init() {
 }
 
 function onLoaded() {
-	console.info('onLoaded()');
 	EventManager.init();
 	WindowListener.init();
 	KeyboardListener.init();
@@ -41,3 +44,7 @@ function onLoaded() {
 	CardChecklistCompletionLine.init();
 	CardFilterByLabel.init();
 }
+
+$(window).bind("load", function () {
+	init();
+});

@@ -7,18 +7,7 @@ var KeyboardListener = require('./../Core/KeyboardListener');
 module.exports = function () {
 
 	function init() {
-		addListsHeaderCardCounter(getLists());
-	}
-
-	function addListsHeaderCardCounter(lists) {
-		lists.each(function () {
-			var list = $(this),
-				listCards = getCards(list),
-				listHeader = list.find('.list-header');
-
-			listHeader.append('<p class="be-ListHeaderCardCounter">' + listCards.length + '</p>');
-
-		});
+		update();
 
 		WindowListener.subscribe("window:location:href:change", update);
 		KeyboardListener.subscribe("keyboard:key:up:enter", update);
@@ -36,7 +25,7 @@ module.exports = function () {
 
 	function getListHeaderCardCounter(list) {
 		if (list) {
-			return list.find('.be-ListHeaderCardCounter');
+			return list.find('.list-header').find('.be-ListHeaderCardCounter');
 		}
 		return null;
 	}
@@ -44,6 +33,12 @@ module.exports = function () {
 	function updateListHeaderNumCards(list, found) {
 		var listHeaderNumCards = getListHeaderCardCounter(list),
 			total = getListCardsTotal(list);
+
+		if (listHeaderNumCards.length === 0) {
+			list.find('.list-header').append('<p class="be-ListHeaderCardCounter"></p>');
+		}
+
+		listHeaderNumCards = getListHeaderCardCounter(list);
 
 		if (listHeaderNumCards) {
 			listHeaderNumCards.attr('data-total', total);
@@ -130,7 +125,9 @@ module.exports = function () {
 				usernames = [],
 				listCardLabels = getCardLabels(card),
 				i,
-				j;
+				j,
+				searchWord,
+				usernameToMatchAgainst;
 
 
 			// Search text
@@ -145,13 +142,25 @@ module.exports = function () {
 					usernames.push($(this).attr('title'));
 				});
 
+				card.find('.member-initials').each(function () {
+					usernames.push($(this).attr('title'));
+				});
+
 				if (usernames.length > 0) {
 					for (i = 0; i < searchTextToFilterByAsWords.length; i++) {
-						for (j = 0; j < usernames.length; j++) {
-							if (usernames[j].toLowerCase().indexOf(searchTextToFilterByAsWords[i].toLowerCase()) > -1) {
-								showCard = true;
-								break;
+						searchWord = searchTextToFilterByAsWords[i].toLowerCase();
+
+						if (searchWord.indexOf('@') === 0) {
+
+							for (j = 0; j < usernames.length; j++) {
+								usernameToMatchAgainst = '@' + usernames[j].toLowerCase();
+
+								if (usernameToMatchAgainst.indexOf(searchWord) > -1) {
+									showCard = true;
+									break;
+								}
 							}
+
 						}
 					}
 				}

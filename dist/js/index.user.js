@@ -11094,23 +11094,22 @@ var WindowListener = require('./../Core/WindowListener');
 module.exports = function () {
 
 	function init() {
-		addLabelFilterToListHeader();
 		update();
 
 		WindowListener.subscribe("window:location:href:change", update);
 	}
 
-	function addLabelFilterToListHeader() {
+	function addLabelFilterToListHeader(list) {
 
-		Utils.getLists().each(function () {
-			var list = $(this);
-			var listHeader = list.find('.list-header'),
-				filterTriggerButton,
-				filterCloseButton,
-				selectAllButton,
-				selectNoneButton,
-				filterList;
+		var listHeader = list.find('.list-header'),
+			filterTriggerButton,
+			filterCloseButton,
+			selectAllButton,
+			selectNoneButton,
+			filterList;
 
+		if (listHeader.find('.be-CardFilterByLabel__list .pop-over-content').length === 0) {
+			listHeader.append('<div class"be-CardFilterByLabel__list"><div class="pop-over-content"></div></div>');
 			listHeader.append('<a class="be-CardFilterByLabel__trigger dark-hover"><span class="icon-sm icon-label"></span></a>');
 			listHeader.append('<div class="be-CardFilterByLabel__list">' +
 				'<div class="pop-over-header js-pop-over-header"><span class="pop-over-header-title">Filter by Label</span><a href="#" class="pop-over-header-close-btn icon-sm icon-close"></a></div>' +
@@ -11150,12 +11149,7 @@ module.exports = function () {
 				filterListContent.find('[type="checkbox"]').prop('checked', false).removeAttr('checked');
 				updateFilter(filterListContent);
 			});
-
-		});
-
-		$(document).bind('click', function () {
-			// $('.be-CardFilterByLabel__list').hide();
-		});
+		}
 
 	}
 
@@ -11163,6 +11157,7 @@ module.exports = function () {
 	function update() {
 		Utils.getLists().each(function (index) {
 			var list = $(this);
+			addLabelFilterToListHeader(list);
 
 			var filterListContent = list.find('.be-CardFilterByLabel__list .pop-over-content'),
 				listLabelsTemp = [],
@@ -11400,18 +11395,7 @@ var KeyboardListener = require('./../Core/KeyboardListener');
 module.exports = function () {
 
 	function init() {
-		addListsHeaderCardCounter(getLists());
-	}
-
-	function addListsHeaderCardCounter(lists) {
-		lists.each(function () {
-			var list = $(this),
-				listCards = getCards(list),
-				listHeader = list.find('.list-header');
-
-			listHeader.append('<p class="be-ListHeaderCardCounter">' + listCards.length + '</p>');
-
-		});
+		update();
 
 		WindowListener.subscribe("window:location:href:change", update);
 		KeyboardListener.subscribe("keyboard:key:up:enter", update);
@@ -11429,7 +11413,7 @@ module.exports = function () {
 
 	function getListHeaderCardCounter(list) {
 		if (list) {
-			return list.find('.be-ListHeaderCardCounter');
+			return list.find('.list-header').find('.be-ListHeaderCardCounter');
 		}
 		return null;
 	}
@@ -11437,6 +11421,12 @@ module.exports = function () {
 	function updateListHeaderNumCards(list, found) {
 		var listHeaderNumCards = getListHeaderCardCounter(list),
 			total = getListCardsTotal(list);
+
+		if (listHeaderNumCards.length === 0) {
+			list.find('.list-header').append('<p class="be-ListHeaderCardCounter"></p>');
+		}
+
+		listHeaderNumCards = getListHeaderCardCounter(list);
 
 		if (listHeaderNumCards) {
 			listHeaderNumCards.attr('data-total', total);
@@ -11523,7 +11513,9 @@ module.exports = function () {
 				usernames = [],
 				listCardLabels = getCardLabels(card),
 				i,
-				j;
+				j,
+				searchWord,
+				usernameToMatchAgainst;
 
 
 			// Search text
@@ -11538,13 +11530,25 @@ module.exports = function () {
 					usernames.push($(this).attr('title'));
 				});
 
+				card.find('.member-initials').each(function () {
+					usernames.push($(this).attr('title'));
+				});
+
 				if (usernames.length > 0) {
 					for (i = 0; i < searchTextToFilterByAsWords.length; i++) {
-						for (j = 0; j < usernames.length; j++) {
-							if (usernames[j].toLowerCase().indexOf(searchTextToFilterByAsWords[i].toLowerCase()) > -1) {
-								showCard = true;
-								break;
+						searchWord = searchTextToFilterByAsWords[i].toLowerCase();
+
+						if (searchWord.indexOf('@') === 0) {
+
+							for (j = 0; j < usernames.length; j++) {
+								usernameToMatchAgainst = '@' + usernames[j].toLowerCase();
+
+								if (usernameToMatchAgainst.indexOf(searchWord) > -1) {
+									showCard = true;
+									break;
+								}
 							}
+
 						}
 					}
 				}
@@ -11711,6 +11715,9 @@ module.exports = function () {
 //
 // ==/UserScript==
 
+console.info('userscript running!');
+
+var $ = require('jquery');
 var EventManager = require('./features/Core/EventManager');
 var WindowListener = require('./features/Core/WindowListener');
 var KeyboardListener = require('./features/Core/KeyboardListener');
@@ -11720,13 +11727,14 @@ var CardPoints = require('./features/CardPoints/CardPoints');
 var CardChecklistCompletionLine = require('./features/CardChecklistCompletionLine/CardChecklistCompletionLine');
 var CardFilterByLabel = require('./features/CardFilterByLabel/CardFilterByLabel');
 
-window.addEventListener("load", init, false);
 
 function init() {
 	var loadInterval;
 
 	loadInterval = window.setInterval(function () {
+		console.log('loading...');
 		if (Utils.isLoaded()) {
+			console.log('loaded!');
 			window.clearInterval(loadInterval);
 			onLoaded();
 		}
@@ -11734,7 +11742,6 @@ function init() {
 }
 
 function onLoaded() {
-	console.info('onLoaded()');
 	EventManager.init();
 	WindowListener.init();
 	KeyboardListener.init();
@@ -11745,5 +11752,9 @@ function onLoaded() {
 	CardFilterByLabel.init();
 }
 
-},{"./features/CardChecklistCompletionLine/CardChecklistCompletionLine":2,"./features/CardFilterByLabel/CardFilterByLabel":3,"./features/CardPoints/CardPoints":4,"./features/Core/EventManager":5,"./features/Core/KeyboardListener":6,"./features/Core/Utils":7,"./features/Core/WindowListener":8,"./features/ListSearch/ListSearch":9}]},{},[10])
+$(window).bind("load", function () {
+	init();
+});
+
+},{"./features/CardChecklistCompletionLine/CardChecklistCompletionLine":2,"./features/CardFilterByLabel/CardFilterByLabel":3,"./features/CardPoints/CardPoints":4,"./features/Core/EventManager":5,"./features/Core/KeyboardListener":6,"./features/Core/Utils":7,"./features/Core/WindowListener":8,"./features/ListSearch/ListSearch":9,"jquery":1}]},{},[10])
 //# sourceMappingURL=index.user.js.map
