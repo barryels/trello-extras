@@ -11094,6 +11094,11 @@ var WindowListener = require('./../Core/WindowListener');
 module.exports = function () {
 
 	function init() {
+
+		Utils.getLists().each(function () {
+			addLabelFilterToListHeader($(this));
+		});
+
 		update();
 
 		WindowListener.subscribe("window:location:href:change", update);
@@ -11155,11 +11160,9 @@ module.exports = function () {
 
 
 	function update() {
-		Utils.getLists().each(function (index) {
-			var list = $(this);
-			addLabelFilterToListHeader(list);
-
-			var filterListContent = list.find('.be-CardFilterByLabel__list .pop-over-content'),
+		Utils.getLists().each(function () {
+			var list = $(this),
+				filterListContent = list.find('.be-CardFilterByLabel__list .pop-over-content'),
 				listLabelsTemp = [],
 				listLabels = [],
 				i,
