@@ -306,8 +306,9 @@ module.exports = function () {
 	}
 
 
-	function publish(eventName, fn) {
-		$.publish(eventName, fn);
+	function publish(eventName, data) {
+		console.log('Utils.publish()', eventName);
+		$.publish(eventName, data);
 	}
 
 

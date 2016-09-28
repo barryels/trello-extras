@@ -91,6 +91,33 @@ function onLoaded() {
 	Utils.subscribe(CardListener.events.CARDS_CARD_REMOVED, function () {
 		console.log('EVENT:', CardListener.events.CARDS_CARD_REMOVED);
 	});
+
+
+	// chrome.runtime.onConnect.addListener(function (port) {
+	// 	port.onMessage.addListener(function (msg) {
+	// 		port.postMessage({counter: msg.counter + 1});
+	// 	});
+	// });
+
+
+	// chrome.extension.onRequest.addListener(
+	// 	function (request, sender, sendResponse) {
+	// 		sendResponse({counter: request.counter + 1});
+	// 	});
+
+	chrome.runtime.onMessage.addListener(
+		function (request, sender, sendResponse) {
+			console.log(sender.tab ?
+			"from a content script:" + sender.tab.url :
+				"from the extension");
+			console.log(request);
+			if (request.eventName) {
+				Utils.publish(request.eventName);
+			}
+			// 	sendResponse({farewell: "goodbye"});
+		});
+
+	// alert('onLoaded()');
 }
 
 
