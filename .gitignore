@@ -11,4 +11,6 @@ dist/*
 !dist/*.gitkeep
 
 
-trello-extras-userscript.pem
+key.pem
+
+*.crx

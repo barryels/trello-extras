@@ -6,11 +6,16 @@
 
 
 var $ = require('jquery');
+var packageJSON = require('./../../../package.json');
 // var Utils = require('./Utils');
 var HideCardCover = require('./../HideCardCover/index');
 
 
 function init() {
+	
+	$('#App_version').html(packageJSON.version);
+	
+	
 	$('#HideCardCover_toggle').change(function () {
 		if (this.checked) {
 			sendEvent(HideCardCover.events.HideCardCover_hide_images);
