@@ -19,6 +19,7 @@ var ListSearch = require('./features/ListSearch/ListSearch');
 var CardPoints = require('./features/CardPoints/CardPoints');
 var CardChecklistCompletionLine = require('./features/CardChecklistCompletionLine/CardChecklistCompletionLine');
 var CardFilterByLabel = require('./features/CardFilterByLabel/CardFilterByLabel');
+var HideCardCover = require('./features/HideCardCover/index');
 
 
 function init() {

@@ -7,3 +7,7 @@ Some extra functionality for Trello, including:
 - Supports card points (useful for Agile-based story point tracking), simply structure the card title as such: "(3) Whatever"
 - Displays a list card count (works in conjuction with list search)
 - Displays a line at the bottom of a card denoting the (rolled-up) completion progress of the checklists for that card
+
+
+[Chrome Web Store](https://chrome.google.com/webstore/detail/begnloilmigphmjgkfhmncnfkeellebd)
+

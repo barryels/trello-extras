@@ -11685,7 +11685,7 @@ var Utils = require('./../Core/Utils');
 module.exports = function () {
 
 	/*
-	 Adds a search box to each list for simple filtering of cards based on their title
+	 Allows toggling the visibility of card cover images
 	 */
 	var init = function (lists) {
 		lists.each(function () {
@@ -11716,6 +11716,43 @@ module.exports = function () {
 },{"./../Core/Utils":7,"jquery":1}],10:[function(require,module,exports){
 'use strict';
 
+var $ = require('jquery');
+var Utils = require('./../Core/Utils');
+
+module.exports = function () {
+
+	/*
+	 Adds a search box to each list for simple filtering of cards based on their title
+	 */
+	var init = function (lists) {
+		lists.each(function () {
+			addSearchToList($(this));
+		})
+	};
+
+	var addSearchToList = function (list) {
+		var listHeader = list.find('.list-header'),
+			inputSearch;
+
+		listHeader.append('<input class="be-ListSearch__input" placeholder="Search..." type="text" />');
+
+		inputSearch = listHeader.find('.be-ListSearch__input');
+		inputSearch.bind('keyup', function () {
+			list.attr('data-be-ListSearch', $(this).val());
+			Utils.filterListCards(list);
+		});
+
+	};
+
+	return {
+		init: init
+	}
+
+}();
+
+},{"./../Core/Utils":7,"jquery":1}],11:[function(require,module,exports){
+'use strict';
+
 // ==UserScript==
 //
 // @namespace      http://www.barryels.com/
@@ -11735,6 +11772,7 @@ var ListSearch = require('./features/ListSearch/ListSearch');
 var CardPoints = require('./features/CardPoints/CardPoints');
 var CardChecklistCompletionLine = require('./features/CardChecklistCompletionLine/CardChecklistCompletionLine');
 var CardFilterByLabel = require('./features/CardFilterByLabel/CardFilterByLabel');
+var HideCardCover = require('./features/HideCardCover/index');
 
 
 function init() {
@@ -11765,5 +11803,5 @@ $(window).bind("load", function () {
 	init();
 });
 
-},{"./features/CardChecklistCompletionLine/CardChecklistCompletionLine":2,"./features/CardFilterByLabel/CardFilterByLabel":3,"./features/CardPoints/CardPoints":4,"./features/Core/EventManager":5,"./features/Core/KeyboardListener":6,"./features/Core/Utils":7,"./features/Core/WindowListener":8,"./features/ListSearch/ListSearch":9,"jquery":1}]},{},[10])
+},{"./features/CardChecklistCompletionLine/CardChecklistCompletionLine":2,"./features/CardFilterByLabel/CardFilterByLabel":3,"./features/CardPoints/CardPoints":4,"./features/Core/EventManager":5,"./features/Core/KeyboardListener":6,"./features/Core/Utils":7,"./features/Core/WindowListener":8,"./features/HideCardCover/index":9,"./features/ListSearch/ListSearch":10,"jquery":1}]},{},[11])
 //# sourceMappingURL=index.user.js.map

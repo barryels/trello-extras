@@ -1,7 +1,7 @@
 {
   "name": "trello-extras-userscript",
   "title": "Trello Extras (Userscript)",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Some extra functionality for Trello",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,9 @@
     "scripts": "simplifyify src/index.user.js --debug --outfile dist/js/index.user.js",
     "scripts:watch": "chokidar 'src/**/*.js' -c 'npm run scripts' --initial --silent",
     "package_json:watch": "chokidar 'package.json' -c 'npm run manifest_json:update' --initial --silent",
-    "watch": "npm run package_json:watch & npm run scripts:watch & npm run styles:watch",
+    "copy_static_files": "n-copy --source 'src/static' --destination 'dist' '*'",
+    "copy_static_files:watch": "chokidar 'src/**/*.*' -c 'npm run copy_static_files' --initial --silent",
+    "watch": "npm run package_json:watch & npm run scripts:watch & npm run styles:watch & npm run copy_static_files:watch",
     "start": "npm run clean && npm run watch",
     "version:bump:patch": "npm version --no-git-tag-version patch",
     "version:bump:minor": "npm version --no-git-tag-version minor",
@@ -57,6 +59,11 @@
         "run_at": "document_end"
       }
     ],
-    "converted_from_user_script": true
+    "converted_from_user_script": true,
+    "browser_action": {
+      "default_title": "",
+      "default_icon": "app-icon-128.png",
+      "default_popup": "popup.html"
+    }
   }
 }
