@@ -6,6 +6,10 @@ var KeyboardListener = require('./../Core/KeyboardListener');
 
 module.exports = function () {
 
+
+	var listOfTickCallbacks = [];
+
+
 	function init() {
 		update();
 
@@ -17,11 +21,25 @@ module.exports = function () {
 		updateListsHeaderCardCounter();
 	}
 
+
+	function registerTickCallback(fn) {
+		var id = listOfTickCallbacks.length + Math.round(Math.random() * 1000000);
+		listOfTickCallbacks.push({id: id, fn: fn});
+		return id;
+	}
+
+
+	function deregisterTickCallback(id) {
+		listOfTickCallbacks.splice(id, 1);
+	}
+
+
 	function updateListsHeaderCardCounter() {
 		getLists().each(function () {
 			updateListHeaderNumCards($(this));
 		});
 	}
+
 
 	function getListHeaderCardCounter(list) {
 		if (list) {
@@ -29,6 +47,7 @@ module.exports = function () {
 		}
 		return null;
 	}
+
 
 	function updateListHeaderNumCards(list, found) {
 		var listHeaderNumCards = getListHeaderCardCounter(list),
@@ -65,6 +84,7 @@ module.exports = function () {
 		return $('.list');
 	}
 
+
 	function getCards(list) {
 		if (!list) {
 			return $('.list-cards > .list-card');
@@ -72,17 +92,21 @@ module.exports = function () {
 		return list.find('> .list-cards > .list-card');
 	}
 
+
 	function getListCardsTotal(list) {
 		return getCards(list).length;
 	}
+
 
 	function getCardChecklists(card) {
 		return card.find('[title="Checklist items"]');
 	}
 
+
 	function getCardLabels(card) {
 		return card.find('.card-label');
 	}
+
 
 	function getCardLabelColourFromClass(className) {
 		var classes = className.split(' '),
@@ -226,6 +250,7 @@ module.exports = function () {
 		updateListHeaderNumCards(list, foundCardsTotal);
 	}
 
+
 	function removeDuplicateObjectsFromArray(arr, field) {
 		var u = [];
 		arr.reduce(function (a, b) {
@@ -235,9 +260,64 @@ module.exports = function () {
 		return u;
 	}
 
+
+	/**
+	 * Takes every property in an object and mutates the original object's property values
+	 * to match the name of the key. One level only, for now.
+	 * If you specify a prefix string, the value will be prefixed with your string
+	 * If you specify a suffix string, the value will be suffixed with your string
+	 * e.g.
+	 * ( { hello_world: "whatever" }, "asdf_", "-today")
+	 * will become:
+	 *   { hello_world: "asdf_hello_world-today" }
+	 * TODO:
+	 * [?] Add deep nesting support
+	 * [?] Allow more customisation of generated value, e.g. Uppercase, lowercase, add separators, etc.
+	 *
+	 * @param {object} obj
+	 * @param {string=} prefix
+	 * @param {string=} suffix
+	 * @returns {object}
+	 */
+	function mirrorKeys(obj, prefix, suffix) {
+		var propName;
+		var propValue;
+		for (propName in obj) {
+			propValue = propName;
+			if (prefix) {
+				propValue = prefix + propValue;
+			}
+			if (suffix) {
+				propValue = propValue + suffix;
+			}
+			obj[propName] = propValue;
+		}
+		return obj;
+	}
+
+
+	function subscribe(eventName, fn) {
+		$.subscribe(eventName, fn);
+	}
+
+
+	function unsubscribe(eventName, fn) {
+		$.unsubscribe(eventName, fn);
+	}
+
+
+	function publish(eventName, fn) {
+		$.publish(eventName, fn);
+	}
+
+
 	return {
 		init: init,
 		isLoaded: isLoaded,
+		mirrorKeys: mirrorKeys,
+		removeDuplicateObjectsFromArray: removeDuplicateObjectsFromArray,
+		// registerTickCallback: registerTickCallback,
+		// deregisterTickCallback: deregisterTickCallback,
 		getLists: getLists,
 		getCards: getCards,
 		getCardChecklists: getCardChecklists,
@@ -247,7 +327,9 @@ module.exports = function () {
 		getListHeaderCardCounter: getListHeaderCardCounter,
 		getCardLabelColourFromClass: getCardLabelColourFromClass,
 		filterListCards: filterListCards,
-		removeDuplicateObjectsFromArray: removeDuplicateObjectsFromArray
+		subscribe: subscribe,
+		unsubscribe: unsubscribe,
+		publish: publish
 	}
 
 }();

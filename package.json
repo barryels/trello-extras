@@ -35,6 +35,7 @@
     "simplifyify": "^2.0.1"
   },
   "dependencies": {
+    "j2c": "^0.11.2",
     "jquery": "^1.12.0"
   },
   "distDirectory": "dist",

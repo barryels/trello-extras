@@ -13,7 +13,6 @@ module.exports = function () {
 				default:
 					$.publish('keyboard:key:up:' + e.keyCode, true);
 			}
-
 		});
 	}
 

@@ -8,28 +8,22 @@ module.exports = function () {
 	/*
 	 Allows toggling the visibility of card cover images
 	 */
-	var init = function (lists) {
-		lists.each(function () {
-			addSearchToList($(this));
-		})
-	};
+	function init() {
 
-	var addSearchToList = function (list) {
-		var listHeader = list.find('.list-header'),
-			inputSearch;
+	}
 
-		listHeader.append('<input class="be-ListSearch__input" placeholder="Search..." type="text" />');
+	function hideImages() {
 
-		inputSearch = listHeader.find('.be-ListSearch__input');
-		inputSearch.bind('keyup', function () {
-			list.attr('data-be-ListSearch', $(this).val());
-			Utils.filterListCards(list);
-		});
+	}
 
-	};
+	function showImages() {
+
+	}
 
 	return {
-		init: init
+		init: init,
+		showImages: showImages,
+		hideImages: hideImages
 	}
 
 }();
