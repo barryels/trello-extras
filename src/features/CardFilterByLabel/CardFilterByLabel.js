@@ -2,7 +2,7 @@
 
 var $ = require('jquery');
 var Utils = require('./../Core/Utils');
-var WindowListener = require('./../Core/WindowListener');
+var WindowListener = require('./../Listeners/WindowListener');
 var Core = require('./../Core/index');
 
 module.exports = function () {
@@ -28,7 +28,7 @@ module.exports = function () {
 			filterList;
 
 		if (listHeader.find('.be-CardFilterByLabel__list .pop-over-content').length === 0) {
-			listHeader.append('<div class"be-CardFilterByLabel__list"><div class="pop-over-content"></div></div>');
+			listHeader.append('<div class"be-CardFilterByLabel__list"><div class="pop-over-content" style="display: none;"></div></div>');
 			listHeader.append('<a class="be-CardFilterByLabel__trigger dark-hover"><span class="icon-sm icon-label"></span></a>');
 			listHeader.append('<div class="be-CardFilterByLabel__list">' +
 				'<div class="pop-over-header js-pop-over-header"><span class="pop-over-header-title">Filter by Label</span><a href="#" class="pop-over-header-close-btn icon-sm icon-close"></a></div>' +

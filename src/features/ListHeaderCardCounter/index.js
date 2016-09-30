@@ -9,8 +9,8 @@ var name = 'ListHeaderCardCounter';
 var $ = require('jquery');
 var Utils = require('./../Core/Utils');
 var Core = require('./../Core/index');
-var WindowListener = require('./../Core/WindowListener');
-var KeyboardListener = require('./../Core/KeyboardListener');
+var WindowListener = require('./../Listeners/WindowListener');
+var KeyboardListener = require('./../Listeners/KeyboardListener');
 var StyleManager = require('./../Core/StyleManager');
 
 

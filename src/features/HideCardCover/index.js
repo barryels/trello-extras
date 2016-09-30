@@ -30,14 +30,14 @@ function init() {
 
 
 function hideImages() {
-	console.log('hideImages()');
+	// console.log('hideImages()');
 	style['.list-card-cover'].display = 'none';
 	StyleManager.addComponentStyle(name, style);
 }
 
 
 function showImages() {
-	console.log('showImages()');
+	// console.log('showImages()');
 	style['.list-card-cover'].display = 'block';
 	StyleManager.addComponentStyle(name, style);
 }

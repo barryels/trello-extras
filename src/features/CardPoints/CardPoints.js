@@ -6,8 +6,8 @@
 
 var $ = require('jquery');
 var Utils = require('./../Core/Utils');
-var WindowListener = require('./../Core/WindowListener');
-var KeyboardListener = require('./../Core/KeyboardListener');
+var WindowListener = require('./../Listeners/WindowListener');
+var KeyboardListener = require('./../Listeners/KeyboardListener');
 
 module.exports = function () {
 

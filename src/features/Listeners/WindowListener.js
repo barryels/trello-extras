@@ -1,7 +1,7 @@
 'use strict';
 
 var $ = require('jquery');
-var Utils = require('./Utils');
+var Utils = require('./../Core/Utils');
 
 module.exports = function () {
 

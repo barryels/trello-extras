@@ -12,10 +12,10 @@ console.log('Trello Extras loaded!');
 
 var $ = require('jquery');
 var EventManager = require('./features/Core/EventManager');
-var WindowListener = require('./features/Core/WindowListener');
-var KeyboardListener = require('./features/Core/KeyboardListener');
-var ListListener = require('./features/Core/ListListener');
-var CardListener = require('./features/Core/CardListener');
+var WindowListener = require('./features/Listeners/WindowListener');
+var KeyboardListener = require('./features/Listeners/KeyboardListener');
+var ListListener = require('./features/Listeners/ListListener');
+var CardListener = require('./features/Listeners/CardListener');
 var Utils = require('./features/Core/Utils');
 
 var ListHeaderCardCounter = require('./features/ListHeaderCardCounter/index');
@@ -104,7 +104,6 @@ function onLoaded() {
 			if (request.eventName) {
 				Utils.publish(request.eventName);
 			}
-			// 	sendResponse({farewell: "goodbye"});
 		});
 
 }
