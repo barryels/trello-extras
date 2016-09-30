@@ -10,7 +10,7 @@ module.exports = function () {
 	function init() {
 		update();
 
-		WindowListener.subscribe("window:location:href:change", update);
+		Utils.subscribe(WindowListener.events.WINDOW_LOCATION_CHANGE, update);
 		KeyboardListener.subscribe("keyboard:key:up:enter", update);
 	}
 

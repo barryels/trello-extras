@@ -18,6 +18,7 @@ var ListListener = require('./features/Core/ListListener');
 var CardListener = require('./features/Core/CardListener');
 var Utils = require('./features/Core/Utils');
 
+var ListHeaderCardCounter = require('./features/ListHeaderCardCounter/index');
 var ListSearch = require('./features/ListSearch/ListSearch');
 var CardPoints = require('./features/CardPoints/CardPoints');
 var CardChecklistCompletionLine = require('./features/CardChecklistCompletionLine/CardChecklistCompletionLine');
@@ -60,50 +61,39 @@ function onLoaded() {
 	ListListener.init();
 	CardListener.init();
 
+	ListHeaderCardCounter.init();
 	CardPoints.init(Utils.getLists());
-	ListSearch.init(Utils.getLists());
+	ListSearch.init();
 	CardChecklistCompletionLine.init();
 	CardFilterByLabel.init();
 	HideCardCover.init();
 	Settings.init();
 
-	Utils.subscribe(ListListener.events.LISTS_COUNT_CHANGED, function () {
-		console.log('EVENT:', ListListener.events.LISTS_COUNT_CHANGED);
-	});
-
-	Utils.subscribe(ListListener.events.LISTS_LIST_ADDED, function () {
-		console.log('EVENT:', ListListener.events.LISTS_LIST_ADDED);
-	});
-
-	Utils.subscribe(ListListener.events.LISTS_LIST_REMOVED, function () {
-		console.log('EVENT:', ListListener.events.LISTS_LIST_REMOVED);
-	});
-
-
-	Utils.subscribe(CardListener.events.CARDS_COUNT_CHANGED, function () {
-		console.log('EVENT:', CardListener.events.CARDS_COUNT_CHANGED);
-	});
-
-	Utils.subscribe(CardListener.events.CARDS_CARD_ADDED, function () {
-		console.log('EVENT:', CardListener.events.CARDS_CARD_ADDED);
-	});
-
-	Utils.subscribe(CardListener.events.CARDS_CARD_REMOVED, function () {
-		console.log('EVENT:', CardListener.events.CARDS_CARD_REMOVED);
-	});
-
-
-	// chrome.runtime.onConnect.addListener(function (port) {
-	// 	port.onMessage.addListener(function (msg) {
-	// 		port.postMessage({counter: msg.counter + 1});
-	// 	});
+	// Utils.subscribe(ListListener.events.LISTS_COUNT_CHANGED, function () {
+	// 	console.log('EVENT:', ListListener.events.LISTS_COUNT_CHANGED);
+	// });
+	//
+	// Utils.subscribe(ListListener.events.LISTS_LIST_ADDED, function () {
+	// 	console.log('EVENT:', ListListener.events.LISTS_LIST_ADDED);
+	// });
+	//
+	// Utils.subscribe(ListListener.events.LISTS_LIST_REMOVED, function () {
+	// 	console.log('EVENT:', ListListener.events.LISTS_LIST_REMOVED);
+	// });
+	//
+	//
+	// Utils.subscribe(CardListener.events.CARDS_COUNT_CHANGED, function () {
+	// 	console.log('EVENT:', CardListener.events.CARDS_COUNT_CHANGED);
+	// });
+	//
+	// Utils.subscribe(CardListener.events.CARDS_CARD_ADDED, function () {
+	// 	console.log('EVENT:', CardListener.events.CARDS_CARD_ADDED);
+	// });
+	//
+	// Utils.subscribe(CardListener.events.CARDS_CARD_REMOVED, function () {
+	// 	console.log('EVENT:', CardListener.events.CARDS_CARD_REMOVED);
 	// });
 
-
-	// chrome.extension.onRequest.addListener(
-	// 	function (request, sender, sendResponse) {
-	// 		sendResponse({counter: request.counter + 1});
-	// 	});
 
 	chrome.runtime.onMessage.addListener(
 		function (request, sender, sendResponse) {
@@ -117,14 +107,9 @@ function onLoaded() {
 			// 	sendResponse({farewell: "goodbye"});
 		});
 
-	// alert('onLoaded()');
 }
 
 
 $(document).ready(function () {
 	init();
 });
-
-// $(window).bind("load", function () {
-// 	console.log('window.load()');
-// });

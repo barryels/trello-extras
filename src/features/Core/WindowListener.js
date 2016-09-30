@@ -1,17 +1,22 @@
 'use strict';
 
 var $ = require('jquery');
+var Utils = require('./Utils');
 
 module.exports = function () {
 
 	var windowLocationHREF = window.location.href;
+	var events = Utils.mirrorKeys({
+		WINDOW_LOAD_COMPLETE: '',
+		WINDOW_LOCATION_CHANGE: ''
+	});
 
 	function init() {
 		listenToWindowLocationHrefChange();
-	}
 
-	function subscribe(eventName, fn) {
-		$.subscribe(eventName, fn);
+		$(window).bind('load', function () {
+			Utils.publish(events.WINDOW_LOAD_COMPLETE, true);
+		});
 	}
 
 	function listenToWindowLocationHrefChange() {
@@ -28,12 +33,12 @@ module.exports = function () {
 	}
 
 	function onWindowLocationHrefChange() {
-		$.publish('window:location:href:change', true);
+		Utils.publish(events.WINDOW_LOCATION_CHANGE, true);
 	}
 
 	return {
 		init: init,
-		subscribe: subscribe
+		events: events
 	}
 
 }();

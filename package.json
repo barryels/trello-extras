@@ -22,6 +22,7 @@
     "version:bump:minor": "npm version --no-git-tag-version minor",
     "postversion": "npm run manifest_json:update && node ./scripts/postversion/postversion.js",
     "extension_pack": "'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --pack-extension=/Users/13inchretina/Projects/barryels/trello-extras-userscript/dist/ --pack-extension-key=/Users/13inchretina/Projects/barryels/trello-extras-userscript/key.pem",
+    "extension_zip": "",
     "mov:to:gif": "ffmpeg -i 'Trello Extras.mov' -s 1280x800 -pix_fmt rgb24 -r 5 -f gif - | gifsicle --optimize=3 --delay=0 > 'Trello Extras.gif'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -44,6 +45,11 @@
   "distDirectory": "dist",
   "manifestJSONTemplate": {
     "manifest_version": 2,
+    "icons": {
+      "128": "icon-128.png",
+      "16": "icon-16.png",
+      "48": "icon-48.png"
+    },
     "content_scripts": [
       {
         "exclude_globs": [],
@@ -65,9 +71,13 @@
     ],
     "converted_from_user_script": true,
     "browser_action": {
-      "default_title": "",
-      "default_icon": "app-icon-128.png",
-      "default_popup": "popup.html"
+      "default_icon": {
+        "128": "icon-128.png",
+        "16": "icon-16.png",
+        "48": "icon-48.png"
+      },
+      "default_popup": "popup.html",
+      "default_title": "Trello Extras"
     }
   }
 }

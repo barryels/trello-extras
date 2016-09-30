@@ -1,8 +1,8 @@
 'use strict';
 
 var $ = require('jquery');
-var WindowListener = require('./../Core/WindowListener');
-var KeyboardListener = require('./../Core/KeyboardListener');
+// var WindowListener = require('./../Core/WindowListener');
+// var KeyboardListener = require('./../Core/KeyboardListener');
 
 module.exports = function () {
 
@@ -11,14 +11,10 @@ module.exports = function () {
 
 
 	function init() {
-		update();
+		// update();
 
-		WindowListener.subscribe("window:location:href:change", update);
-		KeyboardListener.subscribe("keyboard:key:up:enter", update);
-	}
-
-	function update() {
-		updateListsHeaderCardCounter();
+		// subscribe(WindowListener.events.WINDOW_LOCATION_CHANGE, update);
+		// KeyboardListener.subscribe("keyboard:key:up:enter", update);
 	}
 
 
@@ -31,47 +27,6 @@ module.exports = function () {
 
 	function deregisterTickCallback(id) {
 		listOfTickCallbacks.splice(id, 1);
-	}
-
-
-	function updateListsHeaderCardCounter() {
-		getLists().each(function () {
-			updateListHeaderNumCards($(this));
-		});
-	}
-
-
-	function getListHeaderCardCounter(list) {
-		if (list) {
-			return list.find('.list-header').find('.be-ListHeaderCardCounter');
-		}
-		return null;
-	}
-
-
-	function updateListHeaderNumCards(list, found) {
-		var listHeaderNumCards = getListHeaderCardCounter(list),
-			total = getListCardsTotal(list);
-
-		if (listHeaderNumCards.length === 0) {
-			list.find('.list-header').append('<p class="be-ListHeaderCardCounter"></p>');
-		}
-
-		listHeaderNumCards = getListHeaderCardCounter(list);
-
-		if (listHeaderNumCards) {
-			listHeaderNumCards.attr('data-total', total);
-
-			if (found === undefined || found === total) {
-				listHeaderNumCards.html('<i class="icon-sm icon-card"></i> ' + total);
-			} else {
-				listHeaderNumCards.html('<i class="icon-sm icon-card"></i> ' + found + ' / ' + total);
-			}
-
-			return true;
-		}
-
-		return false;
 	}
 
 
@@ -122,133 +77,7 @@ module.exports = function () {
 
 		return result;
 	}
-
-
-	function filterListCards(list) {
-		var searchTextToFilterBy = '',
-			searchTextToFilterByAsWords = null,
-			labelsToFilterBy = null,
-			foundCardsTotal = 0,
-			listCards = getCards(list);
-
-		// Search text
-		if (list.attr('data-be-ListSearch')) {
-			searchTextToFilterBy = list.attr('data-be-ListSearch');
-			searchTextToFilterByAsWords = searchTextToFilterBy.split(' ');
-		}
-
-		// Label filter
-		if (list.attr('data-be-CardFilterByLabel')) {
-			labelsToFilterBy = list.attr('data-be-CardFilterByLabel').split(',');
-		}
-
-		listCards.each(function () {
-			var card = $(this),
-				showCard = false,
-				title = card.find('.list-card-title').text(),
-				usernames = [],
-				listCardLabels = getCardLabels(card),
-				i,
-				j,
-				searchWord,
-				usernameToMatchAgainst;
-
-
-			// Search text
-			if (searchTextToFilterBy === '') {
-
-				showCard = true;
-
-			} else {
-
-				// Search by username
-				card.find('.member-avatar').each(function () {
-					usernames.push($(this).attr('title'));
-				});
-
-				card.find('.member-initials').each(function () {
-					usernames.push($(this).attr('title'));
-				});
-
-				if (usernames.length > 0) {
-					for (i = 0; i < searchTextToFilterByAsWords.length; i++) {
-						searchWord = searchTextToFilterByAsWords[i].toLowerCase();
-
-						if (searchWord.indexOf('@') === 0) {
-
-							for (j = 0; j < usernames.length; j++) {
-								usernameToMatchAgainst = '@' + usernames[j].toLowerCase();
-
-								if (usernameToMatchAgainst.indexOf(searchWord) > -1) {
-									showCard = true;
-									break;
-								}
-							}
-
-						}
-					}
-				}
-
-
-				// Search by title
-				if (showCard === false) {
-					if (title.toLowerCase().indexOf(searchTextToFilterBy.toLowerCase()) > -1) {
-						showCard = true;
-					} else {
-						showCard = false;
-					}
-				}
-
-			}
-
-			// Label filter
-			if (labelsToFilterBy) {
-				if (showCard === true) {
-					if (listCardLabels.length > 0) {
-						showCard = false;
-
-						listCardLabels.each(function () {
-							var colour = getCardLabelColourFromClass($(this).attr('class')),
-								title = $(this).attr('title'),
-								id = colour + '_' + title;
-
-							if (labelsToFilterBy.indexOf(id) > -1) {
-								showCard = true;
-								return false;
-							}
-						});
-					} else {
-						if (labelsToFilterBy.indexOf('no-labels') > -1) {
-							showCard = true;
-						} else {
-							showCard = false;
-						}
-					}
-				}
-			} else {
-				showCard = false;
-			}
-
-			if (showCard) {
-				card.removeClass('hide');
-			} else {
-				card.addClass('hide');
-			}
-
-			if (!card.hasClass('hide')) {
-				foundCardsTotal += 1;
-			}
-
-		});
-
-		if (foundCardsTotal === listCards.length) {
-			list.removeClass('be-ListFiltered');
-		} else {
-			list.addClass('be-ListFiltered');
-		}
-
-		updateListHeaderNumCards(list, foundCardsTotal);
-	}
+	
 
 
 	function removeDuplicateObjectsFromArray(arr, field) {
@@ -317,17 +146,17 @@ module.exports = function () {
 		isLoaded: isLoaded,
 		mirrorKeys: mirrorKeys,
 		removeDuplicateObjectsFromArray: removeDuplicateObjectsFromArray,
-		// registerTickCallback: registerTickCallback,
-		// deregisterTickCallback: deregisterTickCallback,
+
 		getLists: getLists,
 		getCards: getCards,
 		getCardChecklists: getCardChecklists,
 		getCardLabels: getCardLabels,
 		getListCardsTotal: getListCardsTotal,
-		updateListHeaderNumCards: updateListHeaderNumCards,
-		getListHeaderCardCounter: getListHeaderCardCounter,
 		getCardLabelColourFromClass: getCardLabelColourFromClass,
-		filterListCards: filterListCards,
+
+		// registerTickCallback: registerTickCallback,
+		// deregisterTickCallback: deregisterTickCallback,
+
 		subscribe: subscribe,
 		unsubscribe: unsubscribe,
 		publish: publish

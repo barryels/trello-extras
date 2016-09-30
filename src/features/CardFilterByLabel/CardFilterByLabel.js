@@ -3,6 +3,7 @@
 var $ = require('jquery');
 var Utils = require('./../Core/Utils');
 var WindowListener = require('./../Core/WindowListener');
+var Core = require('./../Core/index');
 
 module.exports = function () {
 
@@ -14,7 +15,7 @@ module.exports = function () {
 
 		update();
 
-		WindowListener.subscribe("window:location:href:change", update);
+		Utils.subscribe(WindowListener.events.WINDOW_LOCATION_CHANGE, update);
 	}
 
 	function addLabelFilterToListHeader(list) {
@@ -163,7 +164,7 @@ module.exports = function () {
 
 		list.attr('data-be-CardFilterByLabel', labelsToFilterBy.join(','));
 
-		Utils.filterListCards(list);
+		Core.filterListCards(list);
 	}
 
 
