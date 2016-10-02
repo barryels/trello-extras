@@ -1,4 +1,4 @@
-# Trello Extras (Userscript)
+# Trello Extras
 
 Some extra functionality for Trello, including:
 
