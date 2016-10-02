@@ -26,9 +26,19 @@
 }
 
 
+.list-cards {
+	margin: 0 4px 0 0 !important;
+	padding: 0 4px 0 0 !important;
+}
+
+
+.list-card.placeholder {
+	background: rgba(0,0,0,0.2) !important;
+	border-bottom: 0 !important;
+}
+
 .u-fancy-scrollbar::-webkit-scrollbar-track-piece {
-/*     background: rgba(0,0,0,0.1) !important; */
-    background: rgba(0,0,0,0.1) !important;
+    background: rgba(0,0,0,0.2) !important;
 }
 
 .u-fancy-scrollbar::-webkit-scrollbar-thumb:horizontal, .u-fancy-scrollbar::-webkit-scrollbar-thumb:vertical {
