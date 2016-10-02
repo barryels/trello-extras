@@ -1,6 +1,6 @@
 {
-  "name": "trello-extras-userscript",
-  "title": "Trello Extras (Userscript)",
+  "name": "trello-extras",
+  "title": "Trello Extras",
   "version": "1.7.3",
   "description": "Some extra functionality for Trello",
   "main": "index.js",
@@ -9,7 +9,7 @@
     "manifest_json:update": "node ./scripts/manifest.json/manifest.json.js",
     "styles": "node-sass src/index.scss dist/css/index.css",
     "styles:watch": "chokidar 'src/**/*.scss' -c 'npm run styles' --initial --silent",
-    "script:index": "simplifyify src/index.user.js --debug --outfile dist/js/index.user.js",
+    "script:index": "simplifyify src/index.js --debug --outfile dist/js/index.js",
     "script:popup": "simplifyify src/popup.js --debug --outfile dist/js/popup.js",
     "scripts": "npm run script:index & npm run script:popup",
     "scripts:watch": "chokidar 'src/**/*.js' -c 'npm run scripts' --initial --silent",
@@ -21,7 +21,7 @@
     "version:bump:patch": "npm version --no-git-tag-version patch",
     "version:bump:minor": "npm version --no-git-tag-version minor",
     "postversion": "npm run manifest_json:update && node ./scripts/postversion/postversion.js",
-    "extension_pack": "'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --pack-extension=/Users/13inchretina/Projects/barryels/trello-extras-userscript/dist/ --pack-extension-key=/Users/13inchretina/Projects/barryels/trello-extras-userscript/key.pem",
+    "extension_pack": "'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --pack-extension=/Users/13inchretina/Projects/barryels/trello-extras/dist/ --pack-extension-key=/Users/13inchretina/Projects/barryels/trello-extras/key.pem",
     "extension_zip": "",
     "mov:to:gif": "ffmpeg -i 'Trello Extras.mov' -s 1280x800 -pix_fmt rgb24 -r 5 -f gif - | gifsicle --optimize=3 --delay=0 > 'Trello Extras.gif'",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -60,7 +60,7 @@
           "css/index.css"
         ],
         "js": [
-          "js/index.user.js"
+          "js/index.js"
         ],
         "matches": [
           "http://trello.com/*",
@@ -69,7 +69,6 @@
         "run_at": "document_end"
       }
     ],
-    "converted_from_user_script": true,
     "browser_action": {
       "default_icon": {
         "16": "icon-16.png",
