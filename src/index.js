@@ -31,13 +31,7 @@ var loadInterval;
 
 
 function init() {
-	// loadInterval = initLoadedCheck();
 	onLoaded();
-}
-
-
-function initLoadedCheck() {
-	return requestAnimationFrame(runLoadedCheck);
 }
 
 
@@ -70,32 +64,6 @@ function onLoaded() {
 	HideCardCover.init();
 	HighlightLastModifiedCard.init();
 	Settings.init();
-
-	// Utils.subscribe(ListListener.events.LISTS_COUNT_CHANGED, function () {
-	// 	console.log('EVENT:', ListListener.events.LISTS_COUNT_CHANGED);
-	// });
-	//
-	// Utils.subscribe(ListListener.events.LISTS_LIST_ADDED, function () {
-	// 	console.log('EVENT:', ListListener.events.LISTS_LIST_ADDED);
-	// });
-	//
-	// Utils.subscribe(ListListener.events.LISTS_LIST_REMOVED, function () {
-	// 	console.log('EVENT:', ListListener.events.LISTS_LIST_REMOVED);
-	// });
-	//
-	//
-	// Utils.subscribe(CardListener.events.CARDS_COUNT_CHANGED, function () {
-	// 	console.log('EVENT:', CardListener.events.CARDS_COUNT_CHANGED);
-	// });
-	//
-	// Utils.subscribe(CardListener.events.CARDS_CARD_ADDED, function () {
-	// 	console.log('EVENT:', CardListener.events.CARDS_CARD_ADDED);
-	// });
-	//
-	// Utils.subscribe(CardListener.events.CARDS_CARD_REMOVED, function () {
-	// 	console.log('EVENT:', CardListener.events.CARDS_CARD_REMOVED);
-	// });
-
 
 	chrome.runtime.onMessage.addListener(
 		function (request, sender, sendResponse) {
