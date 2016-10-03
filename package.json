@@ -2,7 +2,7 @@
   "name": "trello-extras",
   "title": "Trello Extras",
   "version": "1.8.0",
-  "description": "Some extra functionality for Trello. Feel free to request features, report bugs and help out (PRs welcome) here: https://github.com/barryels/trello-extras",
+  "description": "Some extra functionality for Trello.",
   "main": "index.js",
   "scripts": {
     "clean": "n-clean dist && mkdirp dist",
