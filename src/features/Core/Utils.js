@@ -35,6 +35,11 @@ module.exports = function () {
 	}
 
 
+	function findDOMElement(selector) {
+		return $(selector);
+	}
+
+
 	function getLists() {
 		return $('.list');
 	}
@@ -45,6 +50,13 @@ module.exports = function () {
 			return $('.list-cards > .list-card');
 		}
 		return list.find('> .list-cards > .list-card');
+	}
+
+	function getCardTitles(list) {
+		if (!list) {
+			return $('.list-card-title');
+		}
+		return list.find('.list-card-title');
 	}
 
 
@@ -77,7 +89,6 @@ module.exports = function () {
 
 		return result;
 	}
-	
 
 
 	function removeDuplicateObjectsFromArray(arr, field) {
@@ -147,8 +158,11 @@ module.exports = function () {
 		mirrorKeys: mirrorKeys,
 		removeDuplicateObjectsFromArray: removeDuplicateObjectsFromArray,
 
+		findDOMElement: findDOMElement,
+
 		getLists: getLists,
 		getCards: getCards,
+		getCardTitles: getCardTitles,
 		getCardChecklists: getCardChecklists,
 		getCardLabels: getCardLabels,
 		getListCardsTotal: getListCardsTotal,

@@ -24,6 +24,7 @@ var CardPoints = require('./features/CardPoints/CardPoints');
 var CardChecklistCompletionLine = require('./features/CardChecklistCompletionLine/CardChecklistCompletionLine');
 var CardFilterByLabel = require('./features/CardFilterByLabel/CardFilterByLabel');
 var HideCardCover = require('./features/HideCardCover/index');
+var HighlightLastModifiedCard = require('./features/HighlightLastModifiedCard/index');
 var Settings = require('./features/Core/Settings');
 
 var loadInterval;
@@ -67,6 +68,7 @@ function onLoaded() {
 	CardChecklistCompletionLine.init();
 	CardFilterByLabel.init();
 	HideCardCover.init();
+	HighlightLastModifiedCard.init();
 	Settings.init();
 
 	// Utils.subscribe(ListListener.events.LISTS_COUNT_CHANGED, function () {

@@ -25,15 +25,15 @@ module.exports = function () {
 
 	function checkForWindowLocationHrefChange() {
 		if (windowLocationHREF !== window.location.href) {
-			windowLocationHREF = window.location.href;
 			onWindowLocationHrefChange();
+			windowLocationHREF = window.location.href;
 		}
 
 		requestAnimationFrame(checkForWindowLocationHrefChange);
 	}
 
 	function onWindowLocationHrefChange() {
-		Utils.publish(events.WINDOW_LOCATION_CHANGE, true);
+		Utils.publish(events.WINDOW_LOCATION_CHANGE, {from: windowLocationHREF, to: window.location.href});
 	}
 
 	return {
