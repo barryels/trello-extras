@@ -9,6 +9,7 @@ var name = 'HighlightLastModifiedCard';
 var Utils = require('./../Core/Utils');
 var WindowListener = require('./../Listeners/WindowListener');
 var StyleManager = require('./../Core/StyleManager');
+var $ = require('jquery');
 
 
 var style = {};
@@ -17,8 +18,7 @@ style['.' + name] = {
 	background: '#ffc66d !important'
 };
 
-var activeCardHref = null;
-var activeCardDOMElement = null;
+var activeCardID = null;
 
 
 function init() {
@@ -29,15 +29,18 @@ function init() {
 
 
 function onWindowLocationChange(e, data) {
-	console.log('onWindowLocationChange()', data);
-	if (data.from.indexOf('/c/') > -1) {
-		activeCardHref = data.from.split('https://trello.com').join('');
+	Utils.getCards().removeClass(name);
 
-		Utils.getCards().removeClass(name);
-		Utils.findDOMElement('.list-card-title[href="' + activeCardHref + '"]').closest('.list-card').addClass(name);
+	activeCardID = Utils.getCardIDFromCardURL(data.from);
+
+	if (activeCardID) {
+
+		Utils.getCardTitles().each(function (index, cardTitle) {
+			if (activeCardID === Utils.getCardIDFromCardURL($(this).attr('href'))) {
+				$(this).closest('.list-card').addClass(name);
+			}
+		});
 	}
-
-	console.log(activeCardHref, activeCardDOMElement);
 }
 
 

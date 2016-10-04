@@ -52,6 +52,7 @@ module.exports = function () {
 		return list.find('> .list-cards > .list-card');
 	}
 
+
 	function getCardTitles(list) {
 		if (!list) {
 			return $('.list-card-title');
@@ -85,6 +86,22 @@ module.exports = function () {
 				result = classes[i].split('-')[2];
 				break;
 			}
+		}
+
+		return result;
+	}
+
+
+	function getCardIDFromCardURL(url) {
+		var result = null,
+			searchString = '/c/';
+
+		if (!url) {
+			return result;
+		}
+
+		if (url.indexOf(searchString) > -1) {
+			result = url.substring(url.indexOf(searchString) + searchString.length, url.lastIndexOf('/'));
 		}
 
 		return result;
@@ -167,6 +184,7 @@ module.exports = function () {
 		getCardLabels: getCardLabels,
 		getListCardsTotal: getListCardsTotal,
 		getCardLabelColourFromClass: getCardLabelColourFromClass,
+		getCardIDFromCardURL: getCardIDFromCardURL,
 
 		// registerTickCallback: registerTickCallback,
 		// deregisterTickCallback: deregisterTickCallback,
