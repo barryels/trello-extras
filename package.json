@@ -24,6 +24,7 @@
     "extension_pack": "'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --pack-extension=/Users/13inchretina/Projects/barryels/trello-extras/dist/ --pack-extension-key=/Users/13inchretina/Projects/barryels/trello-extras/key.pem",
     "extension_zip": "",
     "mov:to:gif": "ffmpeg -i 'Trello Extras.mov' -s 1280x800 -pix_fmt rgb24 -r 5 -f gif - | gifsicle --optimize=3 --delay=0 > 'Trello Extras.gif'",
+    "test_watch": "nodemon --exec tape './src/**/*-spec.js'",
     "test": "tape './src/**/*-spec.js'"
   },
   "author": "Barry Els <barryels@gmail.com>",
@@ -35,6 +36,7 @@
     "eslint": "^2.7.0",
     "mkdirp": "^0.5.1",
     "node-sass": "^3.5.3",
+    "nodemon": "^1.10.2",
     "npm-build-tools": "^2.2.0",
     "simplifyify": "^2.0.1",
     "tape": "^4.6.2"
