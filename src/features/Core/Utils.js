@@ -15,12 +15,25 @@ module.exports = function () {
 
 		// subscribe(WindowListener.events.WINDOW_LOCATION_CHANGE, update);
 		// KeyboardListener.subscribe("keyboard:key:up:enter", update);
+		initChromeEventListener();
+	}
+
+
+	function initChromeEventListener() {
+		chrome.runtime.onMessage.addListener(
+			function (request, sender, sendResponse) {
+				console.log(sender.tab ? 'from a content script:' + sender.tab.url : 'from the extension');
+				console.log(request);
+				if (request.eventName) {
+					Utils.publish(request.eventName);
+				}
+			});
 	}
 
 
 	function registerTickCallback(fn) {
 		var id = listOfTickCallbacks.length + Math.round(Math.random() * 1000000);
-		listOfTickCallbacks.push({id: id, fn: fn});
+		listOfTickCallbacks.push({ id: id, fn: fn });
 		return id;
 	}
 
@@ -192,6 +205,6 @@ module.exports = function () {
 		subscribe: subscribe,
 		unsubscribe: unsubscribe,
 		publish: publish
-	}
+	};
 
-}();
+} ();

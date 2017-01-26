@@ -8,7 +8,7 @@
 //
 // ==/UserScript==
 
-console.log('Trello Extras loaded!');
+console.log('Trello Extras');
 
 var $ = require('jquery');
 var EventManager = require('./features/Core/EventManager');
@@ -31,14 +31,14 @@ var loadInterval;
 
 
 function init() {
-	onLoaded();
+	runLoadedCheck();
 }
 
 
 function runLoadedCheck() {
-	console.log('Trello Extras loading...');
+	console.log('Trello Extras - Load start');
+
 	if (Utils.isLoaded()) {
-		console.log('Trello Extras loaded!');
 		cancelAnimationFrame(loadInterval);
 		onLoaded();
 	} else {
@@ -48,7 +48,7 @@ function runLoadedCheck() {
 
 
 function onLoaded() {
-	console.log('Trello Extras started!');
+	console.log('Trello Extras - Load complete');
 	EventManager.init();
 	WindowListener.init();
 	KeyboardListener.init();
@@ -64,18 +64,6 @@ function onLoaded() {
 	HideCardCover.init();
 	HighlightLastModifiedCard.init();
 	Settings.init();
-
-	chrome.runtime.onMessage.addListener(
-		function (request, sender, sendResponse) {
-			console.log(sender.tab ?
-			"from a content script:" + sender.tab.url :
-				"from the extension");
-			console.log(request);
-			if (request.eventName) {
-				Utils.publish(request.eventName);
-			}
-		});
-
 }
 
 

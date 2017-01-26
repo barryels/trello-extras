@@ -9,9 +9,9 @@
   },
   "rules": {
     "strict": [2, "global"],
-    "quotes": [2, "double"],
+    "quotes": [2, "single"],
     "eqeqeq": [2, "smart"],
-    "indent": [2, 4],
+    "indent": [2, "tab"],
     "semi": [2, "always"],
     "max-params": [2, 3],
     "max-depth": [2, 2],
