@@ -43,7 +43,8 @@
   },
   "dependencies": {
     "j2c": "^0.11.2",
-    "jquery": "^1.12.0"
+    "jquery": "^1.12.0",
+    "underscore": "^1.8.3"
   },
   "distDirectory": "dist",
   "manifestJSONTemplate": {

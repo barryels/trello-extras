@@ -25,6 +25,7 @@ var CardChecklistCompletionLine = require('./features/CardChecklistCompletionLin
 var CardFilterByLabel = require('./features/CardFilterByLabel/CardFilterByLabel');
 var HideCardCover = require('./features/HideCardCover/index');
 var HighlightLastModifiedCard = require('./features/HighlightLastModifiedCard/index');
+var BoardBackgroundImage = require('./features/BoardBackgroundImage/index');
 var Settings = require('./features/Core/Settings');
 
 var loadInterval;
@@ -63,6 +64,7 @@ function onLoaded() {
 	CardFilterByLabel.init();
 	HideCardCover.init();
 	HighlightLastModifiedCard.init();
+	BoardBackgroundImage.init();
 	Settings.init();
 }
 

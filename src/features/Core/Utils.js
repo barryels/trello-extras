@@ -1,6 +1,7 @@
 'use strict';
 
 var $ = require('jquery');
+var _ = require('underscore');
 // var WindowListener = require('./../Core/WindowListener');
 // var KeyboardListener = require('./../Core/KeyboardListener');
 
@@ -8,6 +9,7 @@ module.exports = function () {
 
 
 	var listOfTickCallbacks = [];
+	var settingsTitle = 'Trello Extras';
 
 
 	function init() {
@@ -71,6 +73,24 @@ module.exports = function () {
 			return $('.list-card-title');
 		}
 		return list.find('.list-card-title');
+	}
+
+
+	function getCardTitleFromCard(card) {
+		return $(card).find('.list-card-title').text();
+	}
+
+
+	function getSettingsCard() {
+		var card = null;
+
+		getCardTitles().each(function (index, cardTitle) {
+			if ($(this).text().indexOf(settingsTitle) > -1) {
+				card = getCards()[index];
+			}
+		});
+
+		return card;
 	}
 
 
@@ -188,6 +208,8 @@ module.exports = function () {
 		mirrorKeys: mirrorKeys,
 		removeDuplicateObjectsFromArray: removeDuplicateObjectsFromArray,
 
+		each: _.each,
+
 		findDOMElement: findDOMElement,
 
 		getLists: getLists,
@@ -196,8 +218,10 @@ module.exports = function () {
 		getCardChecklists: getCardChecklists,
 		getCardLabels: getCardLabels,
 		getListCardsTotal: getListCardsTotal,
+		getCardTitleFromCard: getCardTitleFromCard,
 		getCardLabelColourFromClass: getCardLabelColourFromClass,
 		getCardIDFromCardURL: getCardIDFromCardURL,
+		getSettingsCard: getSettingsCard,
 
 		// registerTickCallback: registerTickCallback,
 		// deregisterTickCallback: deregisterTickCallback,
@@ -207,4 +231,4 @@ module.exports = function () {
 		publish: publish
 	};
 
-} ();
+}();
