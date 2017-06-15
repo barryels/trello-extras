@@ -2,16 +2,25 @@
 
 var $ = require('jquery');
 
+
+var events = {
+	KEY_UP_ANY: 'keyboard:key:up',
+	KEY_UP_VARIABLE: 'keyboard:key:up:',
+	KEY_UP_ENTER: 'keyboard:key:up:enter'
+};
+
+
 module.exports = function () {
 
 	function init() {
 		$(document).bind('keyup', function (e) {
 			switch (e.keyCode) {
 				case 13:
-					$.publish('keyboard:key:up:enter', true);
+					$.publish(events.KEY_UP_ENTER, true);
 					break;
 				default:
-					$.publish('keyboard:key:up:' + e.keyCode, true);
+					$.publish(events.KEY_UP_ANY, true);
+					$.publish(events.KEY_UP_VARIABLE + e.keyCode, true);
 			}
 		});
 	}
@@ -22,7 +31,8 @@ module.exports = function () {
 
 	return {
 		init: init,
+		events: events,
 		subscribe: subscribe
-	}
+	};
 
 }();

@@ -20,7 +20,7 @@ var Utils = require('./features/Core/Utils');
 
 var ListHeaderCardCounter = require('./features/ListHeaderCardCounter/index');
 var ListSearch = require('./features/ListSearch/ListSearch');
-var CardPoints = require('./features/CardPoints/CardPoints');
+var ListHeaderStoryPointCounter = require('./features/ListHeaderStoryPointCounter/ListHeaderStoryPointCounter');
 var CardChecklistCompletionLine = require('./features/CardChecklistCompletionLine/CardChecklistCompletionLine');
 var CardFilterByLabel = require('./features/CardFilterByLabel/CardFilterByLabel');
 var HideCardCover = require('./features/HideCardCover/index');
@@ -58,7 +58,7 @@ function onLoaded() {
 	CardListener.init();
 
 	ListHeaderCardCounter.init();
-	CardPoints.init(Utils.getLists());
+	ListHeaderStoryPointCounter.init();
 	ListSearch.init();
 	CardChecklistCompletionLine.init();
 	CardFilterByLabel.init();

@@ -15,10 +15,10 @@ module.exports = function () {
 		update();
 
 		Utils.subscribe(WindowListener.events.WINDOW_LOCATION_CHANGE, update);
-		KeyboardListener.subscribe("keyboard:key:up:enter", update);
+		Utils.subscribe(KeyboardListener.events.KEY_UP_ENTER, update);
 	}
 
-	function update() {
+	function update(from) {
 		Utils.getLists().each(function () {
 			var list = $(this),
 				listHeader = list.find('.list-header'),
@@ -58,6 +58,6 @@ module.exports = function () {
 
 	return {
 		init: init
-	}
+	};
 
 }();

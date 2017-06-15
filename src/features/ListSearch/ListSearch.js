@@ -14,6 +14,7 @@ module.exports = function () {
 
 
 	function init() {
+		update();
 		Utils.subscribe(ListListener.events.LISTS_COUNT_CHANGED, onListsCountChanged);
 		Utils.subscribe(WindowListener.events.WINDOW_LOAD_COMPLETE, onWindowLoadComplete);
 	}
