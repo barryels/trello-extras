@@ -22,7 +22,6 @@ module.exports = function () {
 	}
 
 	function update() {
-		console.log('ListHeaderStoryPointCounter.update()', Utils.getLists());
 		Utils.getLists().each(function () {
 			var list = $(this),
 				listHeader = list.find('.be-core-list-header-container'),

@@ -37,7 +37,6 @@ function update() {
 
 
 function addListHeaderContainer() {
-	console.log('Core.addListHeaderContainer()');
 	Utils.getLists().each(function () {
 		var list = $(this),
 			listHeader = list.find('.list-header'),
