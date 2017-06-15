@@ -17,6 +17,7 @@ var KeyboardListener = require('./features/Listeners/KeyboardListener');
 var ListListener = require('./features/Listeners/ListListener');
 var CardListener = require('./features/Listeners/CardListener');
 var Utils = require('./features/Core/Utils');
+var Core = require('./features/Core/index');
 
 var ListHeaderCardCounter = require('./features/ListHeaderCardCounter/index');
 var ListSearch = require('./features/ListSearch/ListSearch');
@@ -56,6 +57,7 @@ function onLoaded() {
 	Utils.init();
 	ListListener.init();
 	CardListener.init();
+	Core.init();
 
 	ListHeaderCardCounter.init();
 	ListHeaderStoryPointCounter.init();

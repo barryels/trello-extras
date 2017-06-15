@@ -32,6 +32,8 @@ function init() {
 	StyleManager.addComponentStyle(name, style);
 
 	update();
+
+	Utils.subscribe(WindowListener.events.WINDOW_LOAD_COMPLETE, update);
 	Utils.subscribe(WindowListener.events.WINDOW_LOCATION_CHANGE, update);
 	Utils.subscribe(Core.events.CORE_LIST_CARDS_FILTERED, update);
 }
@@ -62,7 +64,7 @@ function updateListHeaderNumCards(list, found) {
 		total = Utils.getListCardsTotal(list);
 
 	if (listHeaderNumCards.length === 0) {
-		list.find('.list-header').append('<p class="be-ListHeaderCardCounter"></p>');
+		list.find('.be-core-list-header-container').append('<p class="be-ListHeaderCardCounter"></p>');
 	}
 
 	listHeaderNumCards = getListHeaderCardCounter(list);

@@ -8,6 +8,7 @@ var $ = require('jquery');
 var Utils = require('./../Core/Utils');
 var WindowListener = require('./../Listeners/WindowListener');
 var KeyboardListener = require('./../Listeners/KeyboardListener');
+var CardListener = require('./../Listeners/CardListener');
 
 module.exports = function () {
 
@@ -15,13 +16,16 @@ module.exports = function () {
 		update();
 
 		Utils.subscribe(WindowListener.events.WINDOW_LOCATION_CHANGE, update);
+		Utils.subscribe(WindowListener.events.WINDOW_LOAD_COMPLETE, update);
 		Utils.subscribe(KeyboardListener.events.KEY_UP_ENTER, update);
+		Utils.subscribe(CardListener.events.CARDS_COUNT_CHANGED, update);
 	}
 
-	function update(from) {
+	function update() {
+		console.log('ListHeaderStoryPointCounter.update()', Utils.getLists());
 		Utils.getLists().each(function () {
 			var list = $(this),
-				listHeader = list.find('.list-header'),
+				listHeader = list.find('.be-core-list-header-container'),
 				beListPointsTotal,
 				listCards = Utils.getCards(list),
 				total = 0;

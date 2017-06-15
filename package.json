@@ -22,7 +22,7 @@
     "version:bump:minor": "npm version --no-git-tag-version minor",
     "postversion": "npm run manifest_json:update && node ./scripts/postversion/postversion.js",
     "extension_pack": "'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --pack-extension=/Users/13inchretina/Projects/barryels/trello-extras/dist/ --pack-extension-key=/Users/13inchretina/Projects/barryels/trello-extras/key.pem",
-    "extension_zip": "",
+    "extension_zip": "zip -r extension.zip dist",
     "mov:to:gif": "ffmpeg -i 'Trello Extras.mov' -s 1280x800 -pix_fmt rgb24 -r 5 -f gif - | gifsicle --optimize=3 --delay=0 > 'Trello Extras.gif'",
     "test_watch": "nodemon --exec tape './src/**/*-spec.js'",
     "test": "tape './src/**/*-spec.js'"
