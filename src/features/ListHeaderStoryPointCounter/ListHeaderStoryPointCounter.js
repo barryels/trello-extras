@@ -36,15 +36,17 @@ module.exports = function () {
 				var listCard = $(this),
 					cardID = listCard.find('.card-short-id').text(),
 					title = listCard.find('.list-card-title').text(),
-					titleStrippedOfNumber = title.substr(cardID.length, title.length),
+					title = title.substr(cardID.length, title.length),
+					title = title.split(' ').join(''),
 					cardPoints = 0;
 
-				if (titleStrippedOfNumber.indexOf('(') === 0) {
-					cardPoints = parseInt(titleStrippedOfNumber.substring(1, titleStrippedOfNumber.indexOf(')') + 1));
+				var regex = /\([0-9]+\)/g;
+				var matches = title.match(regex);
 
-					if (isNaN(cardPoints)) {
-						cardPoints = 0;
-					}
+				if (matches !== null) {
+					matches.forEach(function (match) {
+						cardPoints += Number(match.split('(').join('').split(')').join(''));
+					});
 				}
 
 				total += cardPoints;
