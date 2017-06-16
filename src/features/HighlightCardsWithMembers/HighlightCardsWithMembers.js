@@ -14,11 +14,11 @@ var css = {};
 css['.' + name] = {
 
 	'&--ShouldHaveMember': {
-		background: '#cc0000 !important',
+		background: '#cc0000 !important'
 	},
 
 	'&--ShouldNotHaveMember': {
-		background: '#cc0000 !important',
+		background: '#cc0000 !important'
 	}
 };
 
