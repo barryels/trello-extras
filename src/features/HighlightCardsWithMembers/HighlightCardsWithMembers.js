@@ -15,7 +15,7 @@ function init() {
 
 
 function update() {
-	console.log('AutoAddRemoveMember.update()');
+	console.log(name + '.update()');
 }
 
 
