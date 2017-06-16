@@ -1,9 +1,11 @@
 'use strict';
 
+
 var $ = require('jquery');
 var Utils = require('./../Core/Utils');
 var WindowListener = require('./../Listeners/WindowListener');
 var Core = require('./../Core/index');
+
 
 module.exports = function () {
 
@@ -73,52 +75,61 @@ module.exports = function () {
 	}
 
 
-	function update() {
-		Utils.getLists().each(function () {
-			var list = $(this),
-				filterListContent = list.find('.be-CardFilterByLabel__list .pop-over-content'),
-				listLabelsTemp = [],
-				listLabels = [],
-				i,
-				j;
+	function update(e) {
 
-			Utils.getCards($(this)).each(function () {
-				Utils.getCardLabels($(this)).each(function () {
-					var colour = Utils.getCardLabelColourFromClass($(this).attr('class')),
-						title = $(this).attr('title'),
-						id = colour + '_' + title;
+		console.log(e);
 
-					var cardLabel = {
-						id: id,
-						colour: colour,
-						title: title
-					};
+		if ((e) && e.type === WindowListener.events.WINDOW_LOCATION_CHANGE) {
+			if (window.location.href.indexOf('&filter') > -1) {
+				// Do nothing
+			} else {
+				Utils.getLists().each(function () {
+					var list = $(this),
+						filterListContent = list.find('.be-CardFilterByLabel__list .pop-over-content'),
+						listLabelsTemp = [],
+						listLabels = [],
+						i,
+						j;
 
-					listLabelsTemp.push(cardLabel);
-				});
-			});
+					Utils.getCards($(this)).each(function () {
+						Utils.getCardLabels($(this)).each(function () {
+							var colour = Utils.getCardLabelColourFromClass($(this).attr('class')),
+								title = $(this).attr('title'),
+								id = colour + '_' + title;
 
-			// Only push unique labels into the listLabels array
-			for (i = 0; i < listLabelsTemp.length; i++) {
-				var exists;
+							var cardLabel = {
+								id: id,
+								colour: colour,
+								title: title
+							};
 
-				for (j = 0; j < listLabels.length; j++) {
-					exists = false;
+							listLabelsTemp.push(cardLabel);
+						});
+					});
 
-					if (listLabels[j].id === listLabelsTemp[i].id) {
-						exists = true;
-						break;
+					// Only push unique labels into the listLabels array
+					for (i = 0; i < listLabelsTemp.length; i++) {
+						var exists;
+
+						for (j = 0; j < listLabels.length; j++) {
+							exists = false;
+
+							if (listLabels[j].id === listLabelsTemp[i].id) {
+								exists = true;
+								break;
+							}
+						}
+
+						if (!exists) {
+							listLabels.push(listLabelsTemp[i]);
+						}
 					}
-				}
 
-				if (!exists) {
-					listLabels.push(listLabelsTemp[i]);
-				}
+					updateLabelFilterList(filterListContent, listLabels);
+
+				});
 			}
-
-			updateLabelFilterList(filterListContent, listLabels);
-
-		});
+		}
 
 	}
 

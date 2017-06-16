@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- Allows toggling the visibility of card cover images
+
  */
 
 
@@ -11,6 +11,7 @@ var Utils = require('./../Core/Utils');
 var Core = require('./../Core/index');
 var WindowListener = require('./../Listeners/WindowListener');
 var KeyboardListener = require('./../Listeners/KeyboardListener');
+var CardListener = require('./../Listeners/CardListener');
 var StyleManager = require('./../Core/StyleManager');
 
 
@@ -35,6 +36,7 @@ function init() {
 
 	Utils.subscribe(WindowListener.events.WINDOW_LOAD_COMPLETE, update);
 	Utils.subscribe(WindowListener.events.WINDOW_LOCATION_CHANGE, update);
+	Utils.subscribe(CardListener.events.CARDS_COUNT_CHANGED, update);
 	Utils.subscribe(Core.events.CORE_LIST_CARDS_FILTERED, update);
 }
 

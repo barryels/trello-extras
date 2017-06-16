@@ -14,19 +14,19 @@ var $ = require('jquery');
 var EventManager = require('./features/Core/EventManager');
 var WindowListener = require('./features/Listeners/WindowListener');
 var KeyboardListener = require('./features/Listeners/KeyboardListener');
+var MouseListener = require('./features/Listeners/MouseListener');
 var ListListener = require('./features/Listeners/ListListener');
 var CardListener = require('./features/Listeners/CardListener');
 var Utils = require('./features/Core/Utils');
 var Core = require('./features/Core/index');
 
 var ListHeaderCardCounter = require('./features/ListHeaderCardCounter/index');
-var ListSearch = require('./features/ListSearch/ListSearch');
 var ListHeaderStoryPointCounter = require('./features/ListHeaderStoryPointCounter/ListHeaderStoryPointCounter');
 var CardChecklistCompletionLine = require('./features/CardChecklistCompletionLine/CardChecklistCompletionLine');
 var CardFilterByLabel = require('./features/CardFilterByLabel/CardFilterByLabel');
-var HideCardCover = require('./features/HideCardCover/index');
 var HighlightLastModifiedCard = require('./features/HighlightLastModifiedCard/index');
 var BoardBackgroundImage = require('./features/BoardBackgroundImage/index');
+var HighlightCardsWithMembers = require('./features/HighlightCardsWithMembers/HighlightCardsWithMembers');
 var Settings = require('./features/Core/Settings');
 
 var loadInterval;
@@ -61,12 +61,11 @@ function onLoaded() {
 
 	ListHeaderCardCounter.init();
 	ListHeaderStoryPointCounter.init();
-	ListSearch.init();
 	CardChecklistCompletionLine.init();
 	CardFilterByLabel.init();
-	HideCardCover.init();
 	HighlightLastModifiedCard.init();
 	BoardBackgroundImage.init();
+	HighlightCardsWithMembers.init();
 	Settings.init();
 }
 
