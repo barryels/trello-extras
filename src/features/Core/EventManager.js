@@ -25,6 +25,6 @@ module.exports = function () {
 
 	return {
 		init: init
-	}
+	};
 
 }();

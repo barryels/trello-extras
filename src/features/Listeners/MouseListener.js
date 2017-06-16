@@ -1,5 +1,6 @@
 'use strict';
 
+
 var $ = require('jquery');
 
 
@@ -13,9 +14,11 @@ module.exports = function () {
 
 	function init() {
 		$(document).bind('mousedown', function (e) {
+			console.log(events.MOUSE_DOWN);
 			$.publish(events.MOUSE_DOWN, true);
 		});
 		$(document).bind('mouseup', function (e) {
+			console.log(events.MOUSE_UP);
 			$.publish(events.MOUSE_UP, true);
 		});
 	}

@@ -60,6 +60,11 @@ module.exports = function () {
 	}
 
 
+	function getListTitle(list) {
+		return list.find('.list-header-name-assist').text();
+	}
+
+
 	function getCards(list) {
 		if (!list) {
 			return $('.list-cards > .list-card');
@@ -213,6 +218,7 @@ module.exports = function () {
 		findDOMElement: findDOMElement,
 
 		getLists: getLists,
+		getListTitle: getListTitle,
 		getCards: getCards,
 		getCardTitles: getCardTitles,
 		getCardChecklists: getCardChecklists,

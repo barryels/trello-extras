@@ -10,6 +10,13 @@ var WindowListener = require('./../Listeners/WindowListener');
 var KeyboardListener = require('./../Listeners/KeyboardListener');
 var CardListener = require('./../Listeners/CardListener');
 
+
+var storyPointTypes = {
+	ESTIMATED: 'ESTIMATED',
+	ACTUAL: 'ACTUAL'
+};
+
+
 module.exports = function () {
 
 	function init() {
@@ -21,13 +28,41 @@ module.exports = function () {
 		Utils.subscribe(CardListener.events.CARDS_COUNT_CHANGED, update);
 	}
 
+
+	function getPointsForCard(type, cardTitle) {
+		var regex,
+			matches,
+			pointsCount = 0,
+			surroundingBrackets = [];
+
+		if (type === storyPointTypes.ESTIMATED) {
+			surroundingBrackets = ['(', ')'];
+			regex = /\([0-9]+\)/g;
+		} else {
+			surroundingBrackets = ['[', ']'];
+			regex = /\[[0-9]+\]/g;
+		}
+
+		matches = cardTitle.match(regex);
+
+		if (matches !== null) {
+			matches.forEach(function (match) {
+				pointsCount += Number(match.split(surroundingBrackets[0]).join('').split(surroundingBrackets[1]).join(''));
+			});
+		}
+
+		return pointsCount;
+	}
+
+
 	function update() {
 		Utils.getLists().each(function () {
 			var list = $(this),
 				listHeader = list.find('.be-core-list-header-container'),
 				beListPointsTotal,
 				listCards = Utils.getCards(list),
-				total = 0;
+				estimatedTotal = 0,
+				actualTotal = 0;
 
 			beListPointsTotal = listHeader.find('.be-list-points-total');
 			if (beListPointsTotal.length === 0) {
@@ -41,21 +76,14 @@ module.exports = function () {
 					title = listCard.find('.list-card-title').text(),
 					title = title.substr(cardID.length, title.length),
 					title = title.split(' ').join(''),
-					cardPoints = 0;
+					estimatedCardPoints = getPointsForCard(storyPointTypes.ESTIMATED, title),
+					actualCardPoints = getPointsForCard(storyPointTypes.ACTUAL, title);
 
-				var regex = /\([0-9]+\)/g;
-				var matches = title.match(regex);
-
-				if (matches !== null) {
-					matches.forEach(function (match) {
-						cardPoints += Number(match.split('(').join('').split(')').join(''));
-					});
-				}
-
-				total += cardPoints;
+				estimatedTotal += estimatedCardPoints;
+				actualTotal += actualCardPoints;
 			});
 
-			beListPointsTotal.html('<i class="icon-sm icon-star"></i> ' + total);
+			beListPointsTotal.html('<a href="#" title="Story Points -> Actual: ' + actualTotal + '; Estimated: ' + estimatedTotal + '" style="text-decoration:none;"><i class="icon-sm icon-information"></i> ' + actualTotal + ' / ' + estimatedTotal + '</a>');
 
 		});
 	}

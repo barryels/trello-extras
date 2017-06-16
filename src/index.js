@@ -53,6 +53,7 @@ function onLoaded() {
 	EventManager.init();
 	WindowListener.init();
 	KeyboardListener.init();
+	MouseListener.init();
 	Utils.init();
 	ListListener.init();
 	CardListener.init();
@@ -61,7 +62,6 @@ function onLoaded() {
 	ListHeaderCardCounter.init();
 	ListHeaderStoryPointCounter.init();
 	CardChecklistCompletionLine.init();
-	CardFilterByLabel.init();
 	HighlightLastModifiedCard.init();
 	BoardBackgroundImage.init();
 	HighlightCardsWithMembers.init();
