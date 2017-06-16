@@ -23,7 +23,6 @@ var Core = require('./features/Core/index');
 var ListHeaderCardCounter = require('./features/ListHeaderCardCounter/index');
 var ListHeaderStoryPointCounter = require('./features/ListHeaderStoryPointCounter/ListHeaderStoryPointCounter');
 var CardChecklistCompletionLine = require('./features/CardChecklistCompletionLine/CardChecklistCompletionLine');
-var CardFilterByLabel = require('./features/CardFilterByLabel/CardFilterByLabel');
 var HighlightLastModifiedCard = require('./features/HighlightLastModifiedCard/index');
 var BoardBackgroundImage = require('./features/BoardBackgroundImage/index');
 var HighlightCardsWithMembers = require('./features/HighlightCardsWithMembers/HighlightCardsWithMembers');
