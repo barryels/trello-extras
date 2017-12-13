@@ -17,6 +17,7 @@
     "copy_static_files": "n-copy --source 'src/static' --destination 'dist' '*'",
     "copy_static_files:watch": "chokidar 'src/**/*.*' -c 'npm run copy_static_files' --initial --silent",
     "watch": "npm run package_json:watch & npm run scripts:watch & npm run styles:watch & npm run copy_static_files:watch",
+    "dev": "npm start",
     "start": "npm run clean && npm run watch",
     "version:bump:patch": "npm version --no-git-tag-version patch",
     "version:bump:minor": "npm version --no-git-tag-version minor",

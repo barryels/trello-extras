@@ -17,14 +17,12 @@ body div.list-header {
 }
 
 .open-card-composer {
-	background-color: transparent !important;
-	border-radius: 4px 4px 4px 4px;
-	color: #fff !important;
-	margin-top: 8px;
+	background-color: #ccc !important;
+	border-radius: 4px 4px 4px 4px !important;
+	margin-top: 8px !important;
 
 	&:hover {
-		background-color: transparent !important;
-		color: #fff !important;
+		background-color: #fff !important;
 	}
 }
 

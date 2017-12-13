@@ -60,12 +60,12 @@ function onLoaded() {
 	Core.init();
 
 	ListHeaderCardCounter.init();
-	ListHeaderStoryPointCounter.init();
-	CardChecklistCompletionLine.init();
-	HighlightLastModifiedCard.init();
+	// ListHeaderStoryPointCounter.init();
+	// CardChecklistCompletionLine.init();
+	// HighlightLastModifiedCard.init();
 	BoardBackgroundImage.init();
-	HighlightCardsWithMembers.init();
-	Settings.init();
+	// HighlightCardsWithMembers.init();
+	// Settings.init();
 }
 
 

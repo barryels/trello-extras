@@ -33,10 +33,13 @@ function onWindowLocationChange(e, data) {
 
 	activeCardID = Utils.getCardIDFromCardURL(data.from);
 
-	if (activeCardID) {
+	console.warn('onWindowLocationChange()', activeCardID, data.from);
 
+	if (activeCardID) {
 		Utils.getCardTitles().each(function (index, cardTitle) {
+			console.log(activeCardID, index, cardTitle);
 			if (activeCardID === Utils.getCardIDFromCardURL($(this).attr('href'))) {
+				console.warn('FOUND:', activeCardID);
 				$(this).closest('.list-card').addClass(name);
 			}
 		});
